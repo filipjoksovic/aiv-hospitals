@@ -1,7 +1,7 @@
 package com.hospital.hospital.servlets.doctor;
 
-import com.hospital.hospital.dao.DoctorDAOInMemImpl;
 import com.hospital.hospital.dto.patient.PatientIdFnameLnameDTO;
+import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.vao.Doctor;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +16,12 @@ import java.util.stream.Collectors;
 @WebServlet(name = "DoctorDetailsServlet", urlPatterns = "/doctorDetails")
 public class DoctorDetailsServlet extends HttpServlet {
 
+    private final DoctorRepository doctorRepository;
+
+    public DoctorDetailsServlet() {
+        doctorRepository = new DoctorRepository();
+    }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (req.getParameter("id") == null) {
@@ -24,7 +30,7 @@ public class DoctorDetailsServlet extends HttpServlet {
         }
         resp.setContentType("text/html");
         resp.setStatus(200);
-        Doctor found = DoctorDAOInMemImpl.getInstance().find(Integer.parseInt(req.getParameter("id")));
+        Doctor found = doctorRepository.find(Integer.parseInt(req.getParameter("id")));
         List<PatientIdFnameLnameDTO> mappedPatients = found.getPatients().stream().map(PatientIdFnameLnameDTO::toDTO).collect(Collectors.toList());
 
         req.setAttribute("patients", mappedPatients);
@@ -46,14 +52,14 @@ public class DoctorDetailsServlet extends HttpServlet {
         String dob = req.getParameter("dob");
         int maxPatients = req.getParameter("patient_quota") != null ? Integer.parseInt(req.getParameter("patient_quota")) : 10;
 
-        Doctor foundDoctor = DoctorDAOInMemImpl.getInstance().find(id);
+        Doctor foundDoctor = doctorRepository.find(id);
         foundDoctor.setFname(fname);
         foundDoctor.setLname(lname);
         foundDoctor.setEmail(email);
         foundDoctor.setPhone(phone);
         foundDoctor.setDob(dob);
         foundDoctor.setMaxPatients(maxPatients);
-        DoctorDAOInMemImpl.getInstance().update(foundDoctor);
+        doctorRepository.update(foundDoctor);
         resp.sendRedirect(req.getContextPath() + "/doctors");
 
     }
@@ -67,7 +73,7 @@ public class DoctorDetailsServlet extends HttpServlet {
 
         int id = Integer.parseInt(req.getParameter("id"));
 
-        DoctorDAOInMemImpl.getInstance().delete(id);
+        doctorRepository.delete(id);
 
         resp.setStatus(200);
         resp.getWriter().print("all good");

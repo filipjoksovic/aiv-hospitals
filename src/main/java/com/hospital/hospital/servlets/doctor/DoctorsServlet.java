@@ -1,6 +1,6 @@
 package com.hospital.hospital.servlets.doctor;
 
-import com.hospital.hospital.dao.DoctorDAOInMemImpl;
+import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.vao.Doctor;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,13 +13,19 @@ import java.io.IOException;
 @WebServlet(name = "DoctorServlet", urlPatterns = "/doctors")
 public class DoctorsServlet extends HttpServlet {
 
+    private final DoctorRepository doctorRepository;
+
+    public DoctorsServlet() {
+        this.doctorRepository = new DoctorRepository();
+    }
+
     public void init() {
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        req.setAttribute("doctors", DoctorDAOInMemImpl.getInstance().getAll());
+        req.setAttribute("doctors", doctorRepository.getAll());
         req.getRequestDispatcher("/doctors/doctors.jsp").forward(req, resp);
     }
 
@@ -33,7 +39,7 @@ public class DoctorsServlet extends HttpServlet {
         int maxPatients = req.getParameter("patient_quota") != null ? Integer.parseInt(req.getParameter("patient_quota")) : 10;
 
         Doctor toSave = new Doctor(fname, lname, email, phone, dob, maxPatients);
-        DoctorDAOInMemImpl.getInstance().save(toSave);
+        doctorRepository.save(toSave);
 
         resp.sendRedirect(req.getContextPath() + "/doctors");
     }

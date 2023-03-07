@@ -1,8 +1,8 @@
 package com.hospital.hospital.servlets.patient;
 
-import com.hospital.hospital.dao.DoctorDAOInMemImpl;
-import com.hospital.hospital.dao.PatientDAOInMemImpl;
 import com.hospital.hospital.dto.doctor.DoctorIdFnameLnameDTO;
+import com.hospital.hospital.repository.DoctorRepository;
+import com.hospital.hospital.repository.PatientRepository;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,6 +16,14 @@ import java.util.stream.Collectors;
 @WebServlet(name = "PatientServlet", urlPatterns = "/patients")
 public class PatientsServlet extends HttpServlet {
 
+    private final DoctorRepository doctorRepository;
+    private final PatientRepository patientRepository;
+
+    public PatientsServlet() {
+        this.doctorRepository = new DoctorRepository();
+        this.patientRepository = new PatientRepository();
+    }
+
     public void init() {
     }
 
@@ -25,8 +33,8 @@ public class PatientsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        req.setAttribute("patients", PatientDAOInMemImpl.getInstance().getAll());
-        List<DoctorIdFnameLnameDTO> doctors = DoctorDAOInMemImpl.getInstance().getAll().stream().map(DoctorIdFnameLnameDTO::toDto).collect(Collectors.toList());
+        req.setAttribute("patients", patientRepository.getAll());
+        List<DoctorIdFnameLnameDTO> doctors = doctorRepository.getAll().stream().map(DoctorIdFnameLnameDTO::toDto).collect(Collectors.toList());
         req.setAttribute("doctors", doctors);
         req.getRequestDispatcher("patients/patients.jsp").forward(req, resp);
     }

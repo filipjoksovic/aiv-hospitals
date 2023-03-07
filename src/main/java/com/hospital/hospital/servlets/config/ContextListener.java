@@ -1,7 +1,7 @@
 package com.hospital.hospital.servlets.config;
 
-import com.hospital.hospital.dao.DoctorDAOInMemImpl;
-import com.hospital.hospital.dao.PatientDAOInMemImpl;
+import com.hospital.hospital.repository.DoctorRepository;
+import com.hospital.hospital.repository.PatientRepository;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.servlet.ServletContextEvent;
@@ -11,6 +11,9 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+
+        DoctorRepository doctorRepository = new DoctorRepository();
+        PatientRepository patientRepository = new PatientRepository();
 
         Patient p1 = (new Patient("Patient", "1", "patient1@email.com", "+38651789648", "21-10-2002", "No note"));
         Patient p2 = (new Patient("Patient", "2", "patient2@email.com", "+38651789648", "21-10-2002", "No note"));
@@ -31,15 +34,15 @@ public class ContextListener implements ServletContextListener {
         p3.setDoctor(d2);
         d2.getPatients().add(p3);
 
-        PatientDAOInMemImpl.getInstance().save(p1);
-        PatientDAOInMemImpl.getInstance().save(p2);
-        PatientDAOInMemImpl.getInstance().save(p3);
-        PatientDAOInMemImpl.getInstance().save(p4);
+        patientRepository.save(p1);
+        patientRepository.save(p2);
+        patientRepository.save(p3);
+        patientRepository.save(p4);
 
-        DoctorDAOInMemImpl.getInstance().save(d1);
-        DoctorDAOInMemImpl.getInstance().save(d2);
-        DoctorDAOInMemImpl.getInstance().save(d3);
-        DoctorDAOInMemImpl.getInstance().save(d4);
+        doctorRepository.save(d1);
+        doctorRepository.save(d2);
+        doctorRepository.save(d3);
+        doctorRepository.save(d4);
 
 
     }
