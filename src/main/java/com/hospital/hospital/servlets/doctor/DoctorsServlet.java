@@ -1,6 +1,6 @@
 package com.hospital.hospital.servlets.doctor;
 
-import com.hospital.hospital.repository.DoctorRepository;
+import com.hospital.hospital.service.DoctorService;
 import com.hospital.hospital.vao.Doctor;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,10 +13,10 @@ import java.io.IOException;
 @WebServlet(name = "DoctorServlet", urlPatterns = "/doctors")
 public class DoctorsServlet extends HttpServlet {
 
-    private final DoctorRepository doctorRepository;
+    private final DoctorService doctorService;
 
     public DoctorsServlet() {
-        this.doctorRepository = new DoctorRepository();
+        this.doctorService = new DoctorService();
     }
 
     public void init() {
@@ -25,7 +25,7 @@ public class DoctorsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html");
-        req.setAttribute("doctors", doctorRepository.getAll());
+        req.setAttribute("doctors", doctorService.getAll());
         req.getRequestDispatcher("/doctors/doctors.jsp").forward(req, resp);
     }
 
@@ -39,7 +39,7 @@ public class DoctorsServlet extends HttpServlet {
         int maxPatients = req.getParameter("patient_quota") != null ? Integer.parseInt(req.getParameter("patient_quota")) : 10;
 
         Doctor toSave = new Doctor(fname, lname, email, phone, dob, maxPatients);
-        doctorRepository.save(toSave);
+        doctorService.save(toSave);
 
         resp.sendRedirect(req.getContextPath() + "/doctors");
     }

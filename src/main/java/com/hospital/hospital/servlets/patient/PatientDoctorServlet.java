@@ -1,8 +1,8 @@
 package com.hospital.hospital.servlets.patient;
 
 import com.hospital.hospital.dto.doctor.DoctorIdFnameLnameDTO;
-import com.hospital.hospital.repository.DoctorRepository;
-import com.hospital.hospital.repository.PatientRepository;
+import com.hospital.hospital.service.DoctorService;
+import com.hospital.hospital.service.PatientService;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.servlet.ServletException;
@@ -20,22 +20,22 @@ import java.util.stream.Collectors;
 @WebServlet(name = "PatientDoctor", urlPatterns = "/patientDoctor")
 public class PatientDoctorServlet extends HttpServlet {
 
-    private final DoctorRepository doctorRepository;
-    private final PatientRepository patientRepository;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 
     public PatientDoctorServlet() {
-        this.doctorRepository = new DoctorRepository();
-        this.patientRepository = new PatientRepository();
+        this.doctorService = new DoctorService();
+        this.patientService = new PatientService();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        List<DoctorIdFnameLnameDTO> doctorsList = doctorRepository.getAll().stream().map(DoctorIdFnameLnameDTO::toDto).collect(Collectors.toList());
+        List<DoctorIdFnameLnameDTO> doctorsList = doctorService.getAll().stream().map(DoctorIdFnameLnameDTO::toDto).collect(Collectors.toList());
 
         req.setAttribute("doctorOptions", doctorsList);
-        List<Doctor> doctors = doctorRepository.getAll();
-        List<Patient> patients = patientRepository.getAll();
+        List<Doctor> doctors = doctorService.getAll();
+        List<Patient> patients = patientService.getAll();
 
         Map<String, Integer> doctorPatientCount = new HashMap<>();
 

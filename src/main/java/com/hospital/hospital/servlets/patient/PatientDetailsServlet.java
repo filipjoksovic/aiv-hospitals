@@ -1,8 +1,8 @@
 package com.hospital.hospital.servlets.patient;
 
 import com.hospital.hospital.dto.doctor.DoctorIdFnameLnameDTO;
-import com.hospital.hospital.repository.DoctorRepository;
-import com.hospital.hospital.repository.PatientRepository;
+import com.hospital.hospital.service.DoctorService;
+import com.hospital.hospital.service.PatientService;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.servlet.ServletException;
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 @WebServlet(name = "PatientDetails", urlPatterns = "/patientDetails")
 public class PatientDetailsServlet extends HttpServlet {
 
-    private final DoctorRepository doctorRepository;
-    private final PatientRepository patientRepository;
+    private final DoctorService doctorService;
+    private final PatientService patientService;
 
     public PatientDetailsServlet() {
-        this.doctorRepository = new DoctorRepository();
-        this.patientRepository = new PatientRepository();
+        this.doctorService = new DoctorService();
+        this.patientService = new PatientService();
     }
 
     @Override
@@ -34,12 +34,12 @@ public class PatientDetailsServlet extends HttpServlet {
 
         int patientId = Integer.parseInt(req.getParameter("id"));
 
-        Patient foundPatient = patientRepository.find(patientId);
+        Patient foundPatient = patientService.find(patientId);
         if (foundPatient == null) {
             resp.sendRedirect(req.getContextPath() + "/patients");
         } else {
             req.setAttribute("patient", foundPatient);
-            List<DoctorIdFnameLnameDTO> doctors = doctorRepository.getAll().stream().map(DoctorIdFnameLnameDTO::toDto).collect(Collectors.toList());
+            List<DoctorIdFnameLnameDTO> doctors = doctorService.getAll().stream().map(DoctorIdFnameLnameDTO::toDto).collect(Collectors.toList());
             req.setAttribute("doctors", doctors);
             req.getRequestDispatcher("/patients/patientDetails.jsp").forward(req, resp);
         }
@@ -60,8 +60,8 @@ public class PatientDetailsServlet extends HttpServlet {
         String note = req.getParameter("note");
         int doctor_id = req.getParameter("doctor_id") != null ? Integer.parseInt(req.getParameter("doctor_id")) : -1;
 
-        Doctor foundDoctor = doctorRepository.find(doctor_id);
-        Patient foundPatient = patientRepository.find(id);
+        Doctor foundDoctor = doctorService.find(doctor_id);
+        Patient foundPatient = patientService.find(id);
         foundPatient.setFname(fname);
         foundPatient.setLname(lname);
         foundPatient.setEmail(email);
@@ -70,11 +70,11 @@ public class PatientDetailsServlet extends HttpServlet {
         foundPatient.setNote(note);
         foundPatient.setDoctor(foundDoctor);
 
-        patientRepository.update(foundPatient);
+        patientService.update(foundPatient);
 
         if (foundDoctor != null) {
             foundDoctor.getPatients().add(foundPatient);
-            doctorRepository.update(foundDoctor);
+            doctorService.update(foundDoctor);
 
         }
         resp.sendRedirect(req.getContextPath() + "/patients");
@@ -90,7 +90,7 @@ public class PatientDetailsServlet extends HttpServlet {
 
         int id = Integer.parseInt(req.getParameter("id"));
 
-        patientRepository.delete(id);
+        patientService.delete(id);
 
         resp.sendRedirect(req.getContextPath() + "/patients");
     }
