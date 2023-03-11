@@ -18,7 +18,6 @@ public class Email implements Serializable {
 
     private static final long serialVersionUID = 1544680932114626710L;
 
-    private Session mySession;
 
     private String to;
 
@@ -60,15 +59,5 @@ public class Email implements Serializable {
         this.body = body;
     }
 
-    public void send() throws Exception {
-        InitialContext ctx = new InitialContext();
-        mySession = (Session) ctx.lookup("java:jboss/mail/hospitals");
-        Message message = new MimeMessage(mySession);
-        message.setFrom(new InternetAddress("filip.joksovic@student.um.si"));
-        Address toAddress = new InternetAddress("filipjoksovic1@gmail.com");
-        message.addRecipient(Message.RecipientType.TO, toAddress);
-        message.setSubject("aaa");
-        message.setContent("Biiiitch", "text/plain");
-        Transport.send(message);
-    }
+
 }

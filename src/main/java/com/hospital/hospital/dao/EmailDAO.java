@@ -1,20 +1,17 @@
 package com.hospital.hospital.dao;
 
+import jakarta.mail.Address;
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.Transport;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
+import javax.naming.InitialContext;
+
 public class EmailDAO {
 
-    public static EmailDAO instance;
 
-    public static synchronized EmailDAO getInstance() {
-        if (instance == null) {
-            instance = new EmailDAO();
-        }
-        return instance;
-    }
-
-    public void setupEmailSender(String from){
-        
-
-    }
 
 
 }

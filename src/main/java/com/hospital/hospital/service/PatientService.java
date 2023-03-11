@@ -13,9 +13,12 @@ public class PatientService {
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
 
+    private final EmailSenderService emailSenderService;
+
     public PatientService() {
         this.doctorRepository = new DoctorRepository();
         this.patientRepository = new PatientRepository();
+        this.emailSenderService = new EmailSenderService();
     }
 
     public List<Patient> getAll() {
@@ -39,7 +42,7 @@ public class PatientService {
     }
 
 
-    public boolean addDoctorToPatient(int patientid, int doctorid) {
+    public boolean addDoctorToPatient(int patientid, int doctorid) throws Exception {
         if (doctorid <= 0 || patientid <= 0) {
             return false;
         }
@@ -47,12 +50,15 @@ public class PatientService {
         Doctor found = this.doctorRepository.find(doctorid);
         Patient foundPatient = this.patientRepository.find(patientid);
 
-        if (found != null && foundPatient != null) {
+
+        if (found != null && foundPatient != null && found.getMaxPatients() > found.getPatients().size()) {
             foundPatient.setDoctor(found);
             this.patientRepository.update(foundPatient);
 
             found.getPatients().add(foundPatient);
             doctorRepository.update(found);
+
+            emailSenderService.send("", "", "A patient has chosen you", "The patient " + foundPatient.getFname() + " " + foundPatient.getLname() + " has chosen you as their doctor. To see their data, go to the application.");
             return true;
 
         }

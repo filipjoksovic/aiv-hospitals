@@ -41,7 +41,7 @@ public class PatientsJsfBean implements Serializable {
         return "patients?faces-redirect=true";
     }
 
-    public String update() {
+    public String update() throws Exception {
         log.info("Attempting to update a patient");
 
         patientService.addDoctorToPatient(selectedPatient.getId(), doctor_id);
