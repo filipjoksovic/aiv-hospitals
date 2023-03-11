@@ -2,8 +2,6 @@ package com.hospital.hospital.servlets.doctor;
 
 import com.hospital.hospital.service.DoctorService;
 import com.hospital.hospital.service.PatientService;
-import com.hospital.hospital.vao.Doctor;
-import com.hospital.hospital.vao.Patient;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -30,15 +28,10 @@ public class RemoveDoctorsPatientServlet extends HttpServlet {
         } else {
             int patientid = Integer.parseInt(req.getParameter("patientId"));
             int doctorid = Integer.parseInt(req.getParameter("doctorId"));
-            Doctor foundDoctor = doctorService.find(doctorid);
 
-            if (foundDoctor != null) {
-                foundDoctor.getPatients().removeIf(p -> p.getId() == patientid);
-                Patient foundPatient = patientService.find(patientid);
-                if (foundPatient != null) {
-                    foundPatient.setDoctor(null);
-                }
-            }
+            doctorService.addPatient(doctorid, patientid);
+            patientService.addDoctorToPatient(patientid, doctorid);
+
             resp.sendRedirect(req.getHeader("referer"));
         }
 

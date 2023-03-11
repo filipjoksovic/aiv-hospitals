@@ -3,6 +3,7 @@ package com.hospital.hospital.service;
 import com.hospital.hospital.dao.PatientDAOInMemImpl;
 import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.repository.PatientRepository;
+import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 
 import java.util.List;
@@ -38,4 +39,19 @@ public class PatientService {
     }
 
 
+    public boolean addDoctorToPatient(int patientid, int doctorid) {
+        if (doctorid <= 0 || patientid != 0) {
+            return false;
+        }
+
+        Doctor found = this.doctorRepository.find(doctorid);
+        Patient foundPatient = this.patientRepository.find(patientid);
+
+        if (found != null && foundPatient != null) {
+            foundPatient.setDoctor(found);
+            this.patientRepository.update(foundPatient);
+            return true;
+        }
+        return false;
+    }
 }

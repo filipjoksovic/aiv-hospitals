@@ -2,8 +2,10 @@ package com.hospital.hospital.repository;
 
 import com.hospital.hospital.dao.DoctorDAOInMemImpl;
 import com.hospital.hospital.vao.Doctor;
+import com.hospital.hospital.vao.Patient;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class DoctorRepository {
     public DoctorRepository() {
@@ -29,4 +31,11 @@ public class DoctorRepository {
         return DoctorDAOInMemImpl.getInstance().delete(doctor_id);
     }
 
+    public List<Patient> getAllDoctorPatients(Doctor doctor) throws NoSuchElementException {
+        return DoctorDAOInMemImpl.getInstance().find(doctor.getId()).getPatients();
+    }
+
+    public int getPatientCount(int id) throws NoSuchElementException {
+        return DoctorDAOInMemImpl.getInstance().find(id).getPatients().size();
+    }
 }

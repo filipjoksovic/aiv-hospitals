@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="https://jakarta.ee/xml/ns/jakartaee"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
@@ -9,4 +10,16 @@
             com.hospital.hospital.servlets.config.ContextListener
         </listener-class>
     </listener>
+
+    <display-name>Test</display-name>
+
+    <servlet>
+        <servlet-name>Test servlet</servlet-name>
+        <servlet-class>jakarta.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Test servlet</servlet-name>
+        <url-pattern>/test/*</url-pattern>
+    </servlet-mapping>
 </web-app>

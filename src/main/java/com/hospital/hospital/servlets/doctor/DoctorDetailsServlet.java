@@ -31,7 +31,7 @@ public class DoctorDetailsServlet extends HttpServlet {
         resp.setContentType("text/html");
         resp.setStatus(200);
         Doctor found = doctorService.find(Integer.parseInt(req.getParameter("id")));
-        List<PatientIdFnameLnameDTO> mappedPatients = found.getPatients().stream().map(PatientIdFnameLnameDTO::toDTO).collect(Collectors.toList());
+        List<PatientIdFnameLnameDTO> mappedPatients = doctorService.getDoctorPatients(found).stream().map(PatientIdFnameLnameDTO::toDTO).collect(Collectors.toList());
 
         req.setAttribute("patients", mappedPatients);
         req.setAttribute("doctor", found);
@@ -53,6 +53,7 @@ public class DoctorDetailsServlet extends HttpServlet {
         int maxPatients = req.getParameter("patient_quota") != null ? Integer.parseInt(req.getParameter("patient_quota")) : 10;
 
         Doctor foundDoctor = doctorService.find(id);
+
         foundDoctor.setFname(fname);
         foundDoctor.setLname(lname);
         foundDoctor.setEmail(email);

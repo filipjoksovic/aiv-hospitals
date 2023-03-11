@@ -68,6 +68,7 @@ public class PatientDetailsServlet extends HttpServlet {
         foundPatient.setPhone(phone);
         foundPatient.setDob(dob);
         foundPatient.setNote(note);
+
         foundPatient.setDoctor(foundDoctor);
 
         patientService.update(foundPatient);
