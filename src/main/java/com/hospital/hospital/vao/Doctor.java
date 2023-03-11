@@ -10,6 +10,7 @@ public class Doctor extends Person {
 
     public Doctor() {
         super();
+        this.setId(-1);
     }
 
     public Doctor(int maxPatients, List<Patient> patients) {

@@ -7,6 +7,7 @@ public class Patient extends Person {
 
     public Patient() {
         super();
+        this.setId(-1);
     }
 
     public Patient(String note) {

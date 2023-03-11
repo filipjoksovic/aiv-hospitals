@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
+
+<h:head>
+    <title>Patients</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+</h:head>
+<h:body>
+    <f:metadata>
+        <f:viewParam name="foo" value="#{patientsBean.resetSelectedPatient()}"/>
+    </f:metadata>
+    <ui:include src="/shared/header.xhtml"></ui:include>
+    <div class="container">
+        <h:outputStylesheet library="css" name="style.css"/>
+        <h1>Add patient</h1>
+        <h:form>
+            <div class="form-group">
+                <h:outputLabel value="First name" for="fname"></h:outputLabel>
+                <h:inputText id="fname" styleClass="form-control"
+                             value='#{patientsBean.selectedPatient.fname }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Last name" for="lname"></h:outputLabel>
+                <h:inputText id="lname" styleClass="form-control"
+                             value='#{patientsBean.selectedPatient.lname }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Email" for="email"></h:outputLabel>
+                <h:inputText id="email" styleClass="form-control"
+                             value='#{patientsBean.selectedPatient.email }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Phone" for="phone"></h:outputLabel>
+                <h:inputText id="phone" styleClass="form-control"
+                             value='#{patientsBean.selectedPatient.phone }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Note" for="note"></h:outputLabel>
+                <h:inputTextarea id="note" styleClass="form-control"
+                                 value='#{patientsBean.selectedPatient.note }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Doctor" for="doctor"></h:outputLabel>
+                <h:selectOneMenu styleClass="form-control" value="#{patientsBean.doctor_id}">
+                    <c:forEach items="#{doctorBean.all}" var="doctor">
+                        <f:selectItem itemValue="#{doctor.id}"
+                                      itemLabel="#{doctor.fname} #{doctor.lname}"></f:selectItem>
+                    </c:forEach>
+                </h:selectOneMenu>
+            </div>
+
+            <div class="form-group">
+                <h:outputLabel value="Date of birth" for="dob"></h:outputLabel>
+                <h:inputText id="dob" styleClass="form-control"
+                             value='#{patientsBean.selectedPatient.dob }'/>
+            </div>
+
+            <h:commandButton
+                    rendered="#{patientsBean.selectedPatient != null and patientsBean.selectedPatient.id != -1}"
+                    styleClass="btn btn-primary"
+                    action="#{patientsBean.update}"
+                    value="Update"></h:commandButton>
+
+
+            <h:commandButton
+                    rendered="#{patientsBean.selectedPatient != null and patientsBean.selectedPatient.id == -1}"
+                    styleClass="btn btn-primary"
+                    action="#{patientsBean.save}"
+                    value="Save"></h:commandButton>
+        </h:form>
+        <h1>List patients</h1>
+        <div class="patients">
+            <c:forEach var="patient" items="#{patientsBean.all}">
+                <div class="patient">
+                    <p><h:outputText value="#{patient.fname} #{patient.lname}"/></p>
+                    <p>Date of birth: <h:outputText value="#{patient.dob}"/></p>
+                    <p>Email: <h:outputText value="#{patient.email}"/></p>
+                    <p>Phone: <h:outputText value="#{patient.phone}"/></p>
+                    <p>Note: <br/><h:outputText value="#{patient.note}"/></p>
+                    <p>Doctor: <h:outputText
+                            value='#{patient.doctor.fname} #{patient.doctor.lname}'/>
+                    </p>
+                    <div class="patient-actions">
+                        <h:form prependId="false">
+                            <h:commandLink styleClass="patient-action danger"
+                                           action="#{patientsBean.delete(patient.id)}">
+                                <i class="fas fa-trash"></i>
+                            </h:commandLink>
+                        </h:form>
+                        <h:form>
+                            <h:commandLink styleClass="patient-action warning"
+                                           action="#{patientsBean.goToPatientDetails(patient.id)}">
+                                <i class="fas fa-eye"></i>
+                            </h:commandLink>
+                        </h:form>
+                    </div>
+                </div>
+
+            </c:forEach>
+        </div>
+    </div>
+</h:body>
+</html>

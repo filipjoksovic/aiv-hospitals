@@ -40,7 +40,7 @@ public class PatientService {
 
 
     public boolean addDoctorToPatient(int patientid, int doctorid) {
-        if (doctorid <= 0 || patientid != 0) {
+        if (doctorid <= 0 || patientid <= 0) {
             return false;
         }
 
@@ -50,7 +50,11 @@ public class PatientService {
         if (found != null && foundPatient != null) {
             foundPatient.setDoctor(found);
             this.patientRepository.update(foundPatient);
+
+            found.getPatients().add(foundPatient);
+            doctorRepository.update(found);
             return true;
+
         }
         return false;
     }

@@ -1,42 +1,95 @@
 <!DOCTYPE html>
 <html xmlns:h="http://xmlns.jcp.org/jsf/html" xmlns:c="http://java.sun.com/jsp/jstl/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets">
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+>
 
 <h:head>
     <title>Doctors</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
           integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
           crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
 </h:head>
 <h:body>
+    <f:metadata>
+        <f:viewParam name="foo" value="#{doctorBean.resetSelectedDoctor()}"/>
+    </f:metadata>
     <ui:include src="/shared/header.xhtml"></ui:include>
-    <h:outputStylesheet library="css" name="style.css"/>
-    <h1>List doctors</h1>
-    <div class="doctors">
-        <c:forEach var="doctor" items="#{doctorBean.all}">
-            <div class="doctor">
-                <p><h:outputText value="#{doctor.fname}"/> <h:outputText value="#{doctor.lname}"/></p>
-                <p>Date of birth: <h:outputText value="#{doctor.dob}"/></p>
-                <p>Email: <h:outputText value="#{doctor.email}"/></p>
-                <p>Phone: <h:outputText value="#{doctor.phone}"/></p>
-                <p>Number of patients: <h:outputText value="#{doctor.patients.size()}"/></p>
-
-                <div class="doctor-actions">
-                    <h:form prependId="false">
-                        <h:commandLink styleClass="doctor-action warning" action="#{doctorBean.delete(doctor.id)}">
-                            <i class="fas fa-eye"></i>
-                        </h:commandLink>
-                    </h:form>
-                    <!--                    <a class="doctor-action warning"-->
-                    <!--                       href="${pageContext.request.getContextPath()}/doctorDetails?id=${doctor.getId()}"><i-->
-                    <!--                            class="fas fa-eye"></i></a>-->
-                    <!--                    <a class="doctor-action danger"-->
-                    <!--                       onclick="prepareDelete(${doctor.getId()})"><i-->
-                    <!--                            class="fas fa-trash"></i></a>-->
-                </div>
+    <div class="container">
+        <h:outputStylesheet library="css" name="style.css"/>
+        <h1>Add doctor</h1>
+        <h:form>
+            <div class="form-group">
+                <h:outputLabel value="First name" for="fname"></h:outputLabel>
+                <h:inputText id="fname" styleClass="form-control"
+                             value='#{doctorBean.selectedDoctor.fname }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Last name" for="lname"></h:outputLabel>
+                <h:inputText id="lname" styleClass="form-control"
+                             value='#{doctorBean.selectedDoctor.lname }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Email" for="email"></h:outputLabel>
+                <h:inputText id="email" styleClass="form-control"
+                             value='#{doctorBean.selectedDoctor.email }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Phone" for="phone"></h:outputLabel>
+                <h:inputText id="phone" styleClass="form-control"
+                             value='#{doctorBean.selectedDoctor.phone }'/>
             </div>
 
-        </c:forEach>
+            <div class="form-group">
+                <h:outputLabel value="Date of birth" for="dob"></h:outputLabel>
+                <h:inputText id="dob" styleClass="form-control"
+                             value='#{doctorBean.selectedDoctor.dob }'/>
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Patient quota" for="maxPatients"></h:outputLabel>
+                <h:inputText id="maxPatients" styleClass="form-control"
+                             value='#{doctorBean.selectedDoctor.maxPatients }'/>
+            </div>
+
+            <h:commandButton rendered="#{doctorBean.selectedDoctor != null and doctorBean.selectedDoctor.id != -1}"
+                             styleClass="btn btn-primary"
+                             action="#{doctorBean.update}"
+                             value="Update"></h:commandButton>
+
+
+            <h:commandButton rendered="#{doctorBean.selectedDoctor != null and doctorBean.selectedDoctor.id == -1}"
+                             styleClass="btn btn-primary"
+                             action="#{doctorBean.save}"
+                             value="Save"></h:commandButton>
+        </h:form>
+        <h1>List doctors</h1>
+        <div class="doctors">
+            <c:forEach var="doctor" items="#{doctorBean.all}">
+                <div class="doctor">
+                    <p><h:outputText value="#{doctor.fname}"/> <h:outputText value="#{doctor.lname}"/></p>
+                    <p>Date of birth: <h:outputText value="#{doctor.dob}"/></p>
+                    <p>Email: <h:outputText value="#{doctor.email}"/></p>
+                    <p>Phone: <h:outputText value="#{doctor.phone}"/></p>
+                    <p>Number of patients: <h:outputText value="#{doctor.patients.size()}"/></p>
+
+                    <div class="doctor-actions">
+                        <h:form prependId="false">
+                            <h:commandLink styleClass="doctor-action danger" action="#{doctorBean.delete(doctor.id)}">
+                                <i class="fas fa-trash"></i>
+                            </h:commandLink>
+                        </h:form>
+                        <h:form>
+                            <h:commandLink styleClass="doctor-action warning"
+                                           action="#{doctorBean.goToDoctorDetails(doctor.id)}">
+                                <i class="fas fa-eye"></i>
+                            </h:commandLink>
+                        </h:form>
+                    </div>
+                </div>
+
+            </c:forEach>
+        </div>
     </div>
 </h:body>
 </html>

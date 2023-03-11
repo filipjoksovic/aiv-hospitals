@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:c="http://java.sun.com/jsp/jstl/core"
+      xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets">
+<h:head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+          integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <h:outputStylesheet library="css" name="style.css"/>
+
+
+</h:head>
+<h:body>
+    <ui:include src="/shared/header.xhtml"></ui:include>
+    <h:outputStylesheet library="css" name="style.css"/>
+
+    <f:view>
+        <div class=" container">
+
+            <h1>Update patient</h1>
+            <h:form>
+                <div class="form-group">
+                    <h:outputLabel value="First name" for="fname"></h:outputLabel>
+                    <h:inputText id="fname" styleClass="form-control"
+                                 value='#{patientsBean.selectedPatient.fname }'/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel value="Last name" for="lname"></h:outputLabel>
+                    <h:inputText id="lname" styleClass="form-control"
+                                 value='#{patientsBean.selectedPatient.lname }'/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel value="Email" for="email"></h:outputLabel>
+                    <h:inputText id="email" styleClass="form-control"
+                                 value='#{patientsBean.selectedPatient.email }'/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel value="Phone" for="phone"></h:outputLabel>
+                    <h:inputText id="phone" styleClass="form-control"
+                                 value='#{patientsBean.selectedPatient.phone }'/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel value="Note" for="note"></h:outputLabel>
+                    <h:inputTextarea id="note" styleClass="form-control"
+                                     value='#{patientsBean.selectedPatient.note }'/>
+                </div>
+                <div class="form-group">
+                    <h:outputLabel value="Doctor" for="doctor"></h:outputLabel>
+                    <h:selectOneMenu styleClass="form-control" value="#{patientsBean.doctor_id}">
+                        <c:forEach items="#{doctorBean.all}" var="doctor">
+                            <f:selectItem itemValue="#{doctor.id}"
+                                          itemLabel="#{doctor.fname} #{doctor.lname}"></f:selectItem>
+                        </c:forEach>
+                    </h:selectOneMenu>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel value="Date of birth" for="dob"></h:outputLabel>
+                    <h:inputText id="dob" styleClass="form-control"
+                                 value='#{patientsBean.selectedPatient.dob }'/>
+                </div>
+
+                <h:commandButton
+                        rendered="#{patientsBean.selectedPatient != null and patientsBean.selectedPatient.id != -1}"
+                        styleClass="btn btn-primary"
+                        action="#{patientsBean.update}"
+                        value="Update"></h:commandButton>
+
+
+                <h:commandButton
+                        rendered="#{patientsBean.selectedPatient != null and patientsBean.selectedPatient.id == -1}"
+                        styleClass="btn btn-primary"
+                        action="#{patientsBean.save}"
+                        value="Save"></h:commandButton>
+            </h:form>
+        </div>
+    </f:view>
+</h:body>
+</html>

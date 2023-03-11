@@ -8,6 +8,7 @@ import com.hospital.hospital.vao.Patient;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
+import java.util.stream.Collectors;
 
 public class DoctorService {
 
@@ -61,5 +62,24 @@ public class DoctorService {
             return true;
         }
         return false;
+    }
+
+    public boolean removePatient(int doctor_id, int patientId) {
+        if (doctor_id <= 0 || patientId <= 0) {
+            return false;
+        }
+
+        Doctor found = this.doctorRepository.find(doctor_id);
+        Patient foundPatient = this.patientRepository.find(patientId);
+
+        if (found != null && foundPatient != null) {
+            found.setPatients(found.getPatients().stream().filter(patient -> patient.getId() != patientId).collect(Collectors.toList()));
+            doctorRepository.update(found);
+            foundPatient.setDoctor(null);
+            patientRepository.update(foundPatient);
+            return true;
+        }
+        return false;
+
     }
 }
