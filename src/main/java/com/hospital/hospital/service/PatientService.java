@@ -5,11 +5,16 @@ import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.repository.PatientRepository;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
+import jakarta.ejb.Stateless;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class PatientService {
+@Stateless
+public class PatientService implements Serializable {
 
+
+    private static final long serialVersionUID = 3278536426967908723L;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
 
@@ -25,8 +30,8 @@ public class PatientService {
         return patientRepository.getAll();
     }
 
-    public Patient find(int patient_id) {
-        return patientRepository.find(patient_id);
+    public Patient find(int patientId) {
+        return patientRepository.find(patientId);
     }
 
     public Patient save(Patient patient) {
@@ -37,8 +42,8 @@ public class PatientService {
         return patientRepository.update(patient);
     }
 
-    public int delete(int patient_id) {
-        return PatientDAOInMemImpl.getInstance().delete(patient_id);
+    public int delete(int patientId) {
+        return PatientDAOInMemImpl.getInstance().delete(patientId);
     }
 
 
@@ -57,11 +62,11 @@ public class PatientService {
 
             found.getPatients().add(foundPatient);
             doctorRepository.update(found);
-
-            emailSenderService.send("", "", "A patient has chosen you", "The patient " + foundPatient.getFname() + " " + foundPatient.getLname() + " has chosen you as their doctor. To see their data, go to the application.");
+            emailSenderService.notifyDoctor(foundPatient);
             return true;
-
+        } else {
+            emailSenderService.notifyPatient(foundPatient);
+            return false;
         }
-        return false;
     }
 }

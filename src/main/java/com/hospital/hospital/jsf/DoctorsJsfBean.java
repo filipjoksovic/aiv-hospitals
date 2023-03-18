@@ -3,6 +3,7 @@ package com.hospital.hospital.jsf;
 import com.hospital.hospital.service.DoctorService;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import org.slf4j.Logger;
@@ -14,11 +15,11 @@ import java.util.List;
 @Named("doctorBean")
 @SessionScoped
 public class DoctorsJsfBean implements Serializable {
-    Logger log = LoggerFactory.getLogger(DoctorsJsfBean.class);
+    private final Logger log = LoggerFactory.getLogger(DoctorsJsfBean.class);
 
     private static final long serialVersionUID = 4659985386224665451L;
-
-    private final DoctorService doctorsService = new DoctorService();
+    @EJB
+    DoctorService doctorsService;
 
     private Doctor selectedDoctor = new Doctor();
 
@@ -40,22 +41,22 @@ public class DoctorsJsfBean implements Serializable {
         return "doctors.xhtml?faces-redirect=true";
     }
 
-    public void delete(int doctor_id) {
-        doctorsService.delete(doctor_id);
+    public void delete(int doctorId) {
+        doctorsService.delete(doctorId);
     }
 
     public List<Doctor> getAll() {
         return doctorsService.getAll();
     }
 
-    public void find(int doctor_id) {
-        doctorsService.find(doctor_id);
+    public void find(int doctorId) {
+        doctorsService.find(doctorId);
     }
 
-    public String goToDoctorDetails(int doctor_id) {
-        Doctor found = doctorsService.find(doctor_id);
+    public String goToDoctorDetails(int doctorId) {
+        Doctor found = doctorsService.find(doctorId);
         selectedDoctor = found;
-        return "doctorDetails.xhtml?id=" + doctor_id + "faces-redirect=true";
+        return "doctorDetails.xhtml?id=" + doctorId + "faces-redirect=true";
     }
 
     public void resetSelectedDoctor() {
@@ -63,8 +64,8 @@ public class DoctorsJsfBean implements Serializable {
         selectedDoctor.setId(-1);
     }
 
-    public String removePatient(int patient_id) {
-        doctorsService.removePatient(selectedDoctor.getId(), patient_id);
+    public String removePatient(int patientId) {
+        doctorsService.removePatient(selectedDoctor.getId(), patientId);
         return "doctorDetails.xhtml?" + "faces-redirect=true";
 
     }
