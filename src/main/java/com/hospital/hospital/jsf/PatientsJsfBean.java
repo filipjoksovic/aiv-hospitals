@@ -5,6 +5,7 @@ import com.hospital.hospital.service.EmailSenderService;
 import com.hospital.hospital.service.PatientService;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
+import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
 import org.slf4j.Logger;
@@ -20,9 +21,13 @@ public class PatientsJsfBean implements Serializable {
     Logger log = LoggerFactory.getLogger(PatientsJsfBean.class);
     private static final long serialVersionUID = -3294547943335355918L;
 
-    private final PatientService patientService = new PatientService();
-    private final DoctorService doctorService = new DoctorService();
-    private final EmailSenderService emailService = new EmailSenderService();
+    @EJB
+    PatientService patientService;
+    @EJB
+    DoctorService doctorService;
+
+    @EJB
+    EmailSenderService emailService;
 
     private Patient selectedPatient = new Patient();
     private Doctor selectedDoctor = new Doctor();
