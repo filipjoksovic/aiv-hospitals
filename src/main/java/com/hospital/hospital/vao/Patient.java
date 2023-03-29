@@ -1,7 +1,10 @@
 package com.hospital.hospital.vao;
 
-public class Patient extends Person {
+import java.io.Serializable;
 
+public class Patient extends Person implements Serializable {
+
+    private static final long serialVersionUID = -2078065580068941509L;
     private String note;
     private Doctor doctor;
 

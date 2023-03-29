@@ -1,10 +1,14 @@
 package com.hospital.hospital.service;
 
+import com.hospital.hospital.interfaces.IDoctorServiceLocal;
+import com.hospital.hospital.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.repository.PatientRepository;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.Stateless;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
@@ -13,38 +17,46 @@ import java.util.Vector;
 import java.util.stream.Collectors;
 
 @Stateless
-public class DoctorService implements Serializable {
-
-
+public class DoctorService implements Serializable, IDoctorServiceRemote, IDoctorServiceLocal {
     private static final long serialVersionUID = 2332164455692294904L;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
+    private final EmailSenderService emailSenderService;
+
+    private final Logger logger = LoggerFactory.getLogger(DoctorService.class);
 
     public DoctorService() {
         this.doctorRepository = new DoctorRepository();
         this.patientRepository = new PatientRepository();
+        this.emailSenderService = new EmailSenderService();
     }
 
+    @Override
     public List<Doctor> getAll() {
         return doctorRepository.getAll();
     }
 
+    @Override
     public Doctor find(int doctorId) {
         return doctorRepository.find(doctorId);
     }
 
+    @Override
     public Doctor save(Doctor doctor) {
         return doctorRepository.save(doctor);
     }
 
+    @Override
     public Doctor update(Doctor doctor) {
         return doctorRepository.update(doctor);
     }
 
+    @Override
     public int delete(int doctorId) {
         return doctorRepository.delete(doctorId);
     }
 
+    @Override
     public List<Patient> getDoctorPatients(Doctor doctor) {
         try {
             return this.doctorRepository.getAllDoctorPatients(doctor);
@@ -53,8 +65,12 @@ public class DoctorService implements Serializable {
         }
     }
 
+    @Override
     public boolean addPatient(int doctorId, int patientId) {
-        if (doctorId <= 0 || patientId != 0) {
+        logger.info("Adding patient with id {} to doctor with id {}", patientId, doctorId);
+
+        if (doctorId <= 0 || patientId <= 0) {
+            logger.error("Invalid ids provided. DoctorId: {}, PatientId: {}", doctorId, patientId);
             return false;
         }
 
@@ -64,11 +80,21 @@ public class DoctorService implements Serializable {
         if (found != null && foundPatient != null) {
             found.getPatients().add(foundPatient);
             doctorRepository.update(found);
+            logger.info("Added patient with id {} to doctor with id {}", patientId, doctorId);
+            try {
+                logger.info("Attempting to notify doctor {} about patient selection", doctorId);
+                emailSenderService.notifyDoctor(foundPatient);
+                logger.info("Doctor {} notified", doctorId);
+
+            } catch (Exception e) {
+                logger.error("Error while sending the email {}", e.getMessage());
+            }
             return true;
         }
         return false;
     }
 
+    @Override
     public boolean removePatient(int doctorId, int patientId) {
         if (doctorId <= 0 || patientId <= 0) {
             return false;
@@ -86,5 +112,10 @@ public class DoctorService implements Serializable {
         }
         return false;
 
+    }
+
+    @Override
+    public String greet() {
+        return "Hello";
     }
 }

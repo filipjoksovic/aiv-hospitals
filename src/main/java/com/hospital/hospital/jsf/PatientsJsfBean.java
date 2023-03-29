@@ -1,8 +1,8 @@
 package com.hospital.hospital.jsf;
 
-import com.hospital.hospital.service.DoctorService;
-import com.hospital.hospital.service.EmailSenderService;
-import com.hospital.hospital.service.PatientService;
+import com.hospital.hospital.interfaces.IDoctorServiceRemote;
+import com.hospital.hospital.interfaces.IPatientServiceLocal;
+import com.hospital.hospital.interfaces.IPatientServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.EJB;
@@ -22,12 +22,15 @@ public class PatientsJsfBean implements Serializable {
     private static final long serialVersionUID = -3294547943335355918L;
 
     @EJB
-    PatientService patientService;
+    IPatientServiceLocal iPatientServiceLocal;
     @EJB
-    DoctorService doctorService;
+    IPatientServiceRemote iPatientServiceRemote;
 
     @EJB
-    EmailSenderService emailService;
+    IDoctorServiceRemote iDoctorServiceRemote;
+
+//    @EJB
+//    EmailSenderService emailService;
 
     private Patient selectedPatient = new Patient();
     private Doctor selectedDoctor = new Doctor();
@@ -37,34 +40,34 @@ public class PatientsJsfBean implements Serializable {
         log.info("Attempting to save a patient");
         if (doctor_id != -1) {
             log.info("No doctor selected for a new patient");
-            selectedDoctor = doctorService.find(doctor_id);
+            selectedDoctor = iDoctorServiceRemote.find(doctor_id);
             selectedPatient.setDoctor(selectedDoctor);
         } else {
             selectedPatient.setDoctor(null);
         }
-        patientService.save(selectedPatient);
+        iPatientServiceLocal.save(selectedPatient);
         return "patients?faces-redirect=true";
     }
 
     public String update() throws Exception {
         log.info("Attempting to update a patient");
 
-        patientService.addDoctorToPatient(selectedPatient.getId(), doctor_id);
+        iPatientServiceRemote.addDoctorToPatient(selectedPatient.getId(), doctor_id);
 
         return "patients?faces-redirect=true";
 
     }
 
     public void delete(int patient_id) {
-        patientService.delete(patient_id);
+        iPatientServiceLocal.delete(patient_id);
     }
 
     public List<Patient> getAll() {
-        return patientService.getAll();
+        return iPatientServiceRemote.getAll();
     }
 
     public Patient find(int patient_id) {
-        return this.patientService.find(patient_id);
+        return this.iPatientServiceRemote.find(patient_id);
     }
 
     public void resetSelectedPatient() {
@@ -86,7 +89,7 @@ public class PatientsJsfBean implements Serializable {
     public String goToPatientDetails(int patient_id) {
         log.info("Setting selected patient");
 
-        this.selectedPatient = patientService.find(patient_id);
+        this.selectedPatient = iPatientServiceRemote.find(patient_id);
         return "patientDetails?faces-redirect=true";
 
     }

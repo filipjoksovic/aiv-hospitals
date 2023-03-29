@@ -1,8 +1,11 @@
 package com.hospital.hospital.vao;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public abstract class Person {
+public abstract class Person implements Serializable {
+
+    private static final long serialVersionUID = 7447025625103498705L;
     private int id;
     private String fname;
     private String lname;

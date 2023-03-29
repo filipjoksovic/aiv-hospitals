@@ -39,8 +39,8 @@ public class PatientDAOInMemImpl implements PatientDAO {
 
     @Override
     public Patient save(Patient entity) {
-        logger.info("Saving entity with id {}", entity.getId());
         entity.setId(generateId());
+        logger.info("Saving entity with id {}", entity.getId());
         dataSource.add(entity);
         return entity;
     }

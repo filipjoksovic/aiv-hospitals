@@ -1,6 +1,7 @@
 package com.hospital.hospital.jsf;
 
-import com.hospital.hospital.service.DoctorService;
+import com.hospital.hospital.interfaces.IDoctorServiceLocal;
+import com.hospital.hospital.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.EJB;
@@ -19,7 +20,9 @@ public class DoctorsJsfBean implements Serializable {
 
     private static final long serialVersionUID = 4659985386224665451L;
     @EJB
-    DoctorService doctorsService;
+    IDoctorServiceLocal iDoctorServiceLocal;
+    @EJB
+    IDoctorServiceRemote iDoctorServiceRemote;
 
     private Doctor selectedDoctor = new Doctor();
 
@@ -27,7 +30,7 @@ public class DoctorsJsfBean implements Serializable {
         log.info("Attempting to save new doctor");
         log.info("Making a new default doctor instance");
 
-        doctorsService.save(selectedDoctor);
+        iDoctorServiceLocal.save(selectedDoctor);
     }
 
     public String update() {
@@ -36,26 +39,25 @@ public class DoctorsJsfBean implements Serializable {
             return "doctors.xhtml?faces-redirect=true";
         }
         log.info("Updating doctor with id {}", selectedDoctor.getId());
-        doctorsService.update(selectedDoctor);
+        iDoctorServiceLocal.update(selectedDoctor);
 
         return "doctors.xhtml?faces-redirect=true";
     }
 
     public void delete(int doctorId) {
-        doctorsService.delete(doctorId);
+        iDoctorServiceLocal.delete(doctorId);
     }
 
     public List<Doctor> getAll() {
-        return doctorsService.getAll();
+        return iDoctorServiceRemote.getAll();
     }
 
     public void find(int doctorId) {
-        doctorsService.find(doctorId);
+        iDoctorServiceRemote.find(doctorId);
     }
 
     public String goToDoctorDetails(int doctorId) {
-        Doctor found = doctorsService.find(doctorId);
-        selectedDoctor = found;
+        selectedDoctor = iDoctorServiceRemote.find(doctorId);
         return "doctorDetails.xhtml?id=" + doctorId + "faces-redirect=true";
     }
 
@@ -65,7 +67,7 @@ public class DoctorsJsfBean implements Serializable {
     }
 
     public String removePatient(int patientId) {
-        doctorsService.removePatient(selectedDoctor.getId(), patientId);
+        iDoctorServiceRemote.removePatient(selectedDoctor.getId(), patientId);
         return "doctorDetails.xhtml?" + "faces-redirect=true";
 
     }
