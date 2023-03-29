@@ -1,6 +1,8 @@
 package com.hospital.hospital.dao;
 
 import com.hospital.hospital.vao.Doctor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
 import java.util.List;
@@ -12,6 +14,8 @@ public class DoctorDAOInMemImpl implements DoctorDAO {
 
     private static DoctorDAOInMemImpl instance;
     private final List<Doctor> dataSource = new Vector<>();
+    Logger logger = LoggerFactory.getLogger(DoctorDAOInMemImpl.class);
+
 
     public static synchronized DoctorDAOInMemImpl getInstance() {
         if (instance == null) {
@@ -38,6 +42,7 @@ public class DoctorDAOInMemImpl implements DoctorDAO {
     @Override
     public Doctor save(Doctor entity) {
         entity.setId(this.generateId());
+        logger.info("Saving entity with id: {} ", entity.getId());
         this.dataSource.add(entity);
         return entity;
     }

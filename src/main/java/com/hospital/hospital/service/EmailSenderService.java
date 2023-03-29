@@ -1,6 +1,8 @@
 package com.hospital.hospital.service;
 
+import com.hospital.hospital.dao.EmailSenderServiceRemote;
 import com.hospital.hospital.vao.Patient;
+import jakarta.ejb.Remote;
 import jakarta.ejb.Stateless;
 import jakarta.mail.Address;
 import jakarta.mail.Message;
@@ -13,7 +15,8 @@ import javax.naming.InitialContext;
 import java.io.Serializable;
 
 @Stateless
-public class EmailSenderService implements Serializable {
+@Remote(EmailSenderServiceRemote.class)
+public class EmailSenderService implements Serializable, EmailSenderServiceRemote {
 
 
     private static final long serialVersionUID = 7791113143224082345L;
@@ -26,7 +29,7 @@ public class EmailSenderService implements Serializable {
         this.send("", "", "Error when choosing doctor", "There has been an error when choosing your doctor. Perhaps the quota is full, or a server error was encountered.");
     }
 
-    private void send(String to, String from, String subject, String body) throws Exception {
+    public void send(String to, String from, String subject, String body) throws Exception {
         Session mySession;
         InitialContext ctx = new InitialContext();
         mySession = (Session) ctx.lookup("java:jboss/mail/hospitals");

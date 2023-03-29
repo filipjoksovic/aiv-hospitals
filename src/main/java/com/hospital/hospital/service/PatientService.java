@@ -1,6 +1,8 @@
 package com.hospital.hospital.service;
 
 import com.hospital.hospital.dao.PatientDAOInMemImpl;
+import com.hospital.hospital.interfaces.IPatientServiceLocal;
+import com.hospital.hospital.interfaces.IPatientServiceRemote;
 import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.repository.PatientRepository;
 import com.hospital.hospital.vao.Doctor;
@@ -11,7 +13,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Stateless
-public class PatientService implements Serializable {
+public class PatientService implements Serializable, IPatientServiceLocal, IPatientServiceRemote {
 
 
     private static final long serialVersionUID = 3278536426967908723L;
@@ -26,34 +28,39 @@ public class PatientService implements Serializable {
         this.emailSenderService = new EmailSenderService();
     }
 
+    @Override
     public List<Patient> getAll() {
         return patientRepository.getAll();
     }
 
+    @Override
     public Patient find(int patientId) {
         return patientRepository.find(patientId);
     }
 
+    @Override
     public Patient save(Patient patient) {
         return patientRepository.save(patient);
     }
 
+    @Override
     public Patient update(Patient patient) {
         return patientRepository.update(patient);
     }
 
+    @Override
     public int delete(int patientId) {
         return PatientDAOInMemImpl.getInstance().delete(patientId);
     }
 
-
-    public boolean addDoctorToPatient(int patientid, int doctorid) throws Exception {
-        if (doctorid <= 0 || patientid <= 0) {
+    @Override
+    public boolean addDoctorToPatient(int patientId, int doctorId) throws Exception {
+        if (doctorId <= 0 || patientId <= 0) {
             return false;
         }
 
-        Doctor found = this.doctorRepository.find(doctorid);
-        Patient foundPatient = this.patientRepository.find(patientid);
+        Doctor found = this.doctorRepository.find(doctorId);
+        Patient foundPatient = this.patientRepository.find(patientId);
 
 
         if (found != null && foundPatient != null && found.getMaxPatients() > found.getPatients().size()) {

@@ -1,10 +1,13 @@
 package com.hospital.hospital.vao;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Vector;
 
-public class Doctor extends Person {
+public class Doctor extends Person implements Serializable {
 
+
+    private static final long serialVersionUID = 4408855420657862980L;
     private int maxPatients;
     private List<Patient> patients = new Vector<>();
 
