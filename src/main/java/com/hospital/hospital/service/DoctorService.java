@@ -26,6 +26,7 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
 
     private final Logger logger = LoggerFactory.getLogger(DoctorService.class);
 
+
     public DoctorService() {
         this.doctorRepository = new DoctorRepository();
         this.patientRepository = new PatientRepository();

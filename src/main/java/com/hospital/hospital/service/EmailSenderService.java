@@ -1,10 +1,7 @@
 package com.hospital.hospital.service;
 
-import com.hospital.hospital.dao.EmailSenderServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
-import jakarta.ejb.Remote;
-import jakarta.ejb.Stateless;
 import jakarta.mail.Address;
 import jakarta.mail.Message;
 import jakarta.mail.Session;
@@ -15,8 +12,6 @@ import jakarta.mail.internet.MimeMessage;
 import javax.naming.InitialContext;
 import java.io.Serializable;
 
-@Stateless
-@Remote(EmailSenderServiceRemote.class)
 public class EmailSenderService implements Serializable {
 
 
