@@ -38,7 +38,7 @@ public class PatientsJsfBean implements Serializable {
 
     public String save() {
         log.info("Attempting to save a patient");
-        if (doctor_id != -1) {
+        if (doctor_id > 0) {
             log.info("No doctor selected for a new patient");
             selectedDoctor = iDoctorServiceRemote.find(doctor_id);
             selectedPatient.setDoctor(selectedDoctor);

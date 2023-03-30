@@ -1,6 +1,6 @@
 package com.hospital.hospital.service;
 
-import com.hospital.hospital.dao.PatientDAOInMemImpl;
+import com.hospital.hospital.dao.inmem.PatientDAOInMemImpl;
 import com.hospital.hospital.dto.PatientListNotification;
 import com.hospital.hospital.enums.PatientListAction;
 import com.hospital.hospital.interfaces.IPatientServiceLocal;

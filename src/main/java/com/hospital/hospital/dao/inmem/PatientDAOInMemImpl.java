@@ -1,5 +1,6 @@
-package com.hospital.hospital.dao;
+package com.hospital.hospital.dao.inmem;
 
+import com.hospital.hospital.dao.PatientDAO;
 import com.hospital.hospital.vao.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +20,6 @@ public class PatientDAOInMemImpl implements PatientDAO {
         return instance;
     }
 
-    @Override
     public int generateId() {
         if (dataSource.size() == 0) {
             return 1;
@@ -39,7 +39,7 @@ public class PatientDAOInMemImpl implements PatientDAO {
 
     @Override
     public Patient save(Patient entity) {
-        entity.setId(generateId());
+//        entity.setId(generateId());
         logger.info("Saving entity with id {}", entity.getId());
         dataSource.add(entity);
         return entity;
@@ -52,15 +52,10 @@ public class PatientDAOInMemImpl implements PatientDAO {
         return entity;
     }
 
+    @Override
     public int delete(int id) {
         dataSource.removeIf(patient -> patient.getId() == id);
         return id;
-    }
-
-    @Override
-    public Patient delete(Patient entity) {
-        dataSource.removeIf(patient -> entity.getId() == patient.getId());
-        return entity;
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.hospital.hospital.dao;
+package com.hospital.hospital.dao.inmem;
 
+import com.hospital.hospital.dao.DoctorDAO;
 import com.hospital.hospital.vao.Doctor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +25,6 @@ public class DoctorDAOInMemImpl implements DoctorDAO {
         return instance;
     }
 
-    @Override
     public int generateId() {
         return this.dataSource.size() > 0 ? this.dataSource.stream().max(Comparator.comparing(Doctor::getId)).orElseThrow(NoSuchElementException::new).getId() + 1 : 1;
     }
@@ -55,14 +55,21 @@ public class DoctorDAOInMemImpl implements DoctorDAO {
     }
 
     @Override
-    public Doctor delete(Doctor entity) {
-        dataSource.removeIf(doctor -> entity.getId() == doctor.getId());
-        return entity;
+    public int delete(int entityId) {
+        dataSource.removeIf(doctor -> entityId == doctor.getId());
+        return 1;
     }
 
-    public int delete(int id) {
-        Doctor foundDoctor = this.find(id);
-        this.delete(foundDoctor);
-        return id;
+
+    @Deprecated
+    @Override
+    /**
+     * Will never be implemented, since there is no more use for inMemDAO. Cry about it
+     * @author Filip Joksovic
+     * @deprecated
+     */
+    public int getNumberOfPatients(int doctorId) {
+        return 0;
     }
+
 }

@@ -61,15 +61,8 @@
                              value='#{patientsBean.selectedPatient.dob }'/>
             </div>
 
-            <h:commandButton
-                    rendered="#{patientsBean.selectedPatient != null and patientsBean.selectedPatient.id != -1}"
-                    styleClass="btn btn-primary"
-                    action="#{patientsBean.update}"
-                    value="Update"></h:commandButton>
-
 
             <h:commandButton
-                    rendered="#{patientsBean.selectedPatient != null and patientsBean.selectedPatient.id == -1}"
                     styleClass="btn btn-primary"
                     action="#{patientsBean.save}"
                     value="Save"></h:commandButton>

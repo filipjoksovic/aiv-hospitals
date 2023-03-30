@@ -18,6 +18,7 @@ public interface DoctorDAO extends CrudDAO<Doctor> {
     @Override
     Doctor update(Doctor entity);
 
-    @Override
-    Doctor delete(Doctor entity);
+    int delete(int entityId);
+
+    int getNumberOfPatients(int doctorId);
 }

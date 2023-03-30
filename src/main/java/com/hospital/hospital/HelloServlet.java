@@ -1,6 +1,6 @@
 package com.hospital.hospital;
 
-import com.hospital.hospital.dao.PatientDAOInMemImpl;
+import com.hospital.hospital.dao.inmem.PatientDAOInMemImpl;
 import com.hospital.hospital.vao.Patient;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;

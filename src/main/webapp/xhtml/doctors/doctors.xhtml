@@ -52,16 +52,10 @@
                              value='#{doctorBean.selectedDoctor.maxPatients }'/>
             </div>
 
-            <h:commandButton rendered="#{doctorBean.selectedDoctor != null and doctorBean.selectedDoctor.id != -1}"
-                             styleClass="btn btn-primary"
-                             action="#{doctorBean.update}"
-                             value="Update"></h:commandButton>
-
-
-            <h:commandButton rendered="#{doctorBean.selectedDoctor != null and doctorBean.selectedDoctor.id == -1}"
-                             styleClass="btn btn-primary"
-                             action="#{doctorBean.save}"
-                             value="Save"></h:commandButton>
+            <h:commandButton
+                    styleClass="btn btn-primary"
+                    action="#{doctorBean.save}"
+                    value="Save"></h:commandButton>
         </h:form>
         <h1>List doctors</h1>
         <div class="doctors">
@@ -71,7 +65,8 @@
                     <p>Date of birth: <h:outputText value="#{doctor.dob}"/></p>
                     <p>Email: <h:outputText value="#{doctor.email}"/></p>
                     <p>Phone: <h:outputText value="#{doctor.phone}"/></p>
-                    <p>Number of patients: <h:outputText value="#{doctor.patients.size()}"/></p>
+                    <p>Number of patients: <h:outputText
+                            value="#{doctor.numberOfPatients}"/></p>
 
                     <div class="doctor-actions">
                         <h:form prependId="false">

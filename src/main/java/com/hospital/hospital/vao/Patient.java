@@ -2,21 +2,36 @@ package com.hospital.hospital.vao;
 
 import com.hospital.hospital.patterns.observer.DoctorChangeObserver;
 import com.hospital.hospital.patterns.observer.PatientListActionSubject;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 
-public class Patient extends Person implements Serializable {
+@Entity
+@Table(name = "patients")
+public class Patient implements Serializable {
 
     private static final long serialVersionUID = -2078065580068941509L;
-    private String note;
-    private Doctor doctor;
+
+    @Transient
     transient public PatientListActionSubject patientSubject;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    private String fname;
+    private String lname;
+    private String email;
+    private String phone;
+
+    private String note;
+    private String dob;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
+    @Transient
     transient private DoctorChangeObserver patientObserver;
 
 
     public Patient() {
-        super();
-        this.setId(-1);
         this.patientSubject = new PatientListActionSubject();
         this.patientObserver = new DoctorChangeObserver(this.patientSubject);
         this.patientSubject.attach(patientObserver);
@@ -27,8 +42,26 @@ public class Patient extends Person implements Serializable {
         this.note = note;
     }
 
+
+    public Patient(String fname, String lname, String email, String phone, String dob) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
+    }
+
+    public Patient(int id, String fname, String lname, String email, String phone, String dob) {
+        this.id = id;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
+    }
+
     public Patient(String fname, String lname, String email, String phone, String dob, String note) {
-        super(fname, lname, email, phone, dob);
+        this(fname, lname, email, phone, dob);
         this.note = note;
         this.patientSubject = new PatientListActionSubject();
         this.patientObserver = new DoctorChangeObserver(this.patientSubject);
@@ -36,7 +69,7 @@ public class Patient extends Person implements Serializable {
     }
 
     public Patient(int id, String fname, String lname, String email, String phone, String dob, String note) {
-        super(id, fname, lname, email, phone, dob);
+        this(id, fname, lname, email, phone, dob);
         this.note = note;
         this.patientSubject = new PatientListActionSubject();
         this.patientObserver = new DoctorChangeObserver(this.patientSubject);
@@ -44,7 +77,7 @@ public class Patient extends Person implements Serializable {
     }
 
     public Patient(String fname, String lname, String email, String phone, String dob, String note, Doctor doctor) {
-        super(fname, lname, email, phone, dob);
+        this(fname, lname, email, phone, dob);
         this.note = note;
         this.doctor = doctor;
         this.patientSubject = new PatientListActionSubject();
@@ -53,7 +86,7 @@ public class Patient extends Person implements Serializable {
     }
 
     public Patient(int id, String fname, String lname, String email, String phone, String dob, String note, Doctor doctor) {
-        super(id, fname, lname, email, phone, dob);
+        this(id, fname, lname, email, phone, dob);
         this.note = note;
         this.doctor = doctor;
         this.patientSubject = new PatientListActionSubject();
@@ -83,5 +116,69 @@ public class Patient extends Person implements Serializable {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public PatientListActionSubject getPatientSubject() {
+        return patientSubject;
+    }
+
+    public void setPatientSubject(PatientListActionSubject patientSubject) {
+        this.patientSubject = patientSubject;
+    }
+
+    public DoctorChangeObserver getPatientObserver() {
+        return patientObserver;
+    }
+
+    public void setPatientObserver(DoctorChangeObserver patientObserver) {
+        this.patientObserver = patientObserver;
     }
 }

@@ -18,7 +18,7 @@ public interface PatientDAO extends CrudDAO<Patient> {
     Patient update(Patient entity);
 
     @Override
-    Patient delete(Patient entity);
+    int delete(int entityId);
 
     List<Patient> findByDoctorId(String[] doctorIds);
 }

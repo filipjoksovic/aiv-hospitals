@@ -63,7 +63,7 @@ public class DoctorsJsfBean implements Serializable {
 
     public void resetSelectedDoctor() {
         this.selectedDoctor = new Doctor();
-        selectedDoctor.setId(-1);
+//        selectedDoctor.setId(-1);
     }
 
     public String removePatient(int patientId) {

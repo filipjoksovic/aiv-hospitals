@@ -1,19 +1,34 @@
 package com.hospital.hospital.vao;
 
+import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.List;
-import java.util.Vector;
 
-public class Doctor extends Person implements Serializable {
+@Entity
+@Table(name = "doctors")
+public class Doctor implements Serializable {
 
 
     private static final long serialVersionUID = 4408855420657862980L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+    private String fname;
+    private String lname;
+    private String email;
+    private String phone;
+    private String dob;
+
+
     private int maxPatients;
-    private List<Patient> patients = new Vector<>();
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Patient> patients;
+
 
     public Doctor() {
         super();
-        this.setId(-1);
     }
 
     public Doctor(int maxPatients, List<Patient> patients) {
@@ -22,20 +37,37 @@ public class Doctor extends Person implements Serializable {
     }
 
     public Doctor(String fname, String lname, String email, String phone, String dob, int maxPatients, List<Patient> patients) {
-        super(fname, lname, email, phone, dob);
+        this(fname, lname, email, phone, dob);
         this.maxPatients = maxPatients;
         this.patients = patients;
     }
 
     public Doctor(String fname, String lname, String email, String phone, String dob, int maxPatients) {
-        super(fname, lname, email, phone, dob);
+        this(fname, lname, email, phone, dob);
         this.maxPatients = maxPatients;
     }
 
     public Doctor(int id, String fname, String lname, String email, String phone, String dob, int maxPatients, List<Patient> patients) {
-        super(id, fname, lname, email, phone, dob);
+        this(id, fname, lname, email, phone, dob);
         this.maxPatients = maxPatients;
         this.patients = patients;
+    }
+
+    public Doctor(String fname, String lname, String email, String phone, String dob) {
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
+    }
+
+    public Doctor(int id, String fname, String lname, String email, String phone, String dob) {
+        this.id = id;
+        this.fname = fname;
+        this.lname = lname;
+        this.email = email;
+        this.phone = phone;
+        this.dob = dob;
     }
 
     public int getMaxPatients() {
@@ -52,5 +84,57 @@ public class Doctor extends Person implements Serializable {
 
     public void setPatients(List<Patient> patients) {
         this.patients = patients;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFname() {
+        return fname;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public String getLname() {
+        return lname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public int getNumberOfPatients() {
+        return this.patients != null ? this.patients.size() : 0;
     }
 }
