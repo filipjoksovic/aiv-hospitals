@@ -1,8 +1,8 @@
 package com.hospital.hospital.jsf;
 
-import com.hospital.hospital.interfaces.IDoctorServiceRemote;
-import com.hospital.hospital.interfaces.IPatientServiceLocal;
-import com.hospital.hospital.interfaces.IPatientServiceRemote;
+import com.hospital.hospital.service.interfaces.IDoctorServiceRemote;
+import com.hospital.hospital.service.interfaces.IPatientServiceLocal;
+import com.hospital.hospital.service.interfaces.IPatientServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.EJB;
@@ -52,7 +52,14 @@ public class PatientsJsfBean implements Serializable {
     public String update() throws Exception {
         log.info("Attempting to update a patient");
 
-        iPatientServiceRemote.addDoctorToPatient(selectedPatient.getId(), doctor_id);
+        iPatientServiceLocal.update(selectedPatient);
+
+        if (doctor_id > 0) {
+            log.info("Doctor selected for patient");
+            iPatientServiceRemote.addDoctorToPatient(selectedPatient.getId(), doctor_id);
+        } else {
+            selectedPatient.setDoctor(null);
+        }
 
         return "patients?faces-redirect=true";
 

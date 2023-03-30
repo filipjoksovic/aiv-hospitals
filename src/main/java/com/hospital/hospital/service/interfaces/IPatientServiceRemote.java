@@ -1,4 +1,4 @@
-package com.hospital.hospital.interfaces;
+package com.hospital.hospital.service.interfaces;
 
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.Remote;

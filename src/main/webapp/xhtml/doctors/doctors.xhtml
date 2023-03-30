@@ -61,12 +61,13 @@
         <div class="doctors">
             <c:forEach var="doctor" items="#{doctorBean.all}">
                 <div class="doctor">
-                    <p><h:outputText value="#{doctor.fname}"/> <h:outputText value="#{doctor.lname}"/></p>
+                    <p><h:outputText value="#{doctor.fname} "/> <h:outputText value="#{doctor.lname}"/></p>
                     <p>Date of birth: <h:outputText value="#{doctor.dob}"/></p>
                     <p>Email: <h:outputText value="#{doctor.email}"/></p>
                     <p>Phone: <h:outputText value="#{doctor.phone}"/></p>
                     <p>Number of patients: <h:outputText
-                            value="#{doctor.numberOfPatients}"/></p>
+                            value="#{doctor.numberOfPatients}"/> / <h:outputText
+                            value="#{doctor.maxPatients}"></h:outputText></p>
 
                     <div class="doctor-actions">
                         <h:form prependId="false">

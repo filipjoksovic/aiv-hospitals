@@ -269,3 +269,22 @@ html {
     accent-color: #015870;
     color: white;
 }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+table th {
+    padding: 1rem;
+    border-bottom: 1px solid #e7e7e7;
+    text-align: center;
+}
+
+table td {
+    padding: 1rem;
+    border-bottom: 1px solid #e7e7e7;
+    text-align: center;
+}
+

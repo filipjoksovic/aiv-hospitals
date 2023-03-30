@@ -1,4 +1,4 @@
-package com.hospital.hospital.dao;
+package com.hospital.hospital.dao.interfaces;
 
 import com.hospital.hospital.vao.Doctor;
 

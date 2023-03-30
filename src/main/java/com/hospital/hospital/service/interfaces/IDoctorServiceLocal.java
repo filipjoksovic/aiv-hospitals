@@ -1,4 +1,4 @@
-package com.hospital.hospital.interfaces;
+package com.hospital.hospital.service.interfaces;
 
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
@@ -16,4 +16,5 @@ public interface IDoctorServiceLocal {
     int delete(int doctorId);
 
     List<Patient> getDoctorPatients(Doctor doctor);
+
 }

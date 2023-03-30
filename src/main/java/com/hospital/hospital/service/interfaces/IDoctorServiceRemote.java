@@ -1,4 +1,4 @@
-package com.hospital.hospital.interfaces;
+package com.hospital.hospital.service.interfaces;
 
 import com.hospital.hospital.vao.Doctor;
 import jakarta.ejb.Remote;
@@ -15,5 +15,4 @@ public interface IDoctorServiceRemote {
 
     boolean removePatient(int doctorId, int patientId);
 
-    String greet();
 }

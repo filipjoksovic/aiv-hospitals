@@ -137,4 +137,8 @@ public class Doctor implements Serializable {
     public int getNumberOfPatients() {
         return this.patients != null ? this.patients.size() : 0;
     }
+
+    public String getFullName() {
+        return this.fname + " " + this.lname;
+    }
 }

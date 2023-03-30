@@ -2,10 +2,10 @@ package com.hospital.hospital.service;
 
 import com.hospital.hospital.dto.PatientListNotification;
 import com.hospital.hospital.enums.PatientListAction;
-import com.hospital.hospital.interfaces.IDoctorServiceLocal;
-import com.hospital.hospital.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.repository.PatientRepository;
+import com.hospital.hospital.service.interfaces.IDoctorServiceLocal;
+import com.hospital.hospital.service.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.Stateless;
@@ -118,8 +118,5 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
 
     }
 
-    @Override
-    public String greet() {
-        return "Hello";
-    }
+
 }

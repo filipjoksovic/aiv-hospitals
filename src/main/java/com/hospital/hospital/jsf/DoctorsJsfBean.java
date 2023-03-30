@@ -1,7 +1,7 @@
 package com.hospital.hospital.jsf;
 
-import com.hospital.hospital.interfaces.IDoctorServiceLocal;
-import com.hospital.hospital.interfaces.IDoctorServiceRemote;
+import com.hospital.hospital.service.interfaces.IDoctorServiceLocal;
+import com.hospital.hospital.service.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.EJB;

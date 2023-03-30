@@ -1,6 +1,6 @@
 package com.hospital.hospital.dao.inmem;
 
-import com.hospital.hospital.dao.PatientDAO;
+import com.hospital.hospital.dao.interfaces.PatientDAO;
 import com.hospital.hospital.vao.Patient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

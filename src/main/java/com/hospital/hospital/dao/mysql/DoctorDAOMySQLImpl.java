@@ -1,6 +1,6 @@
 package com.hospital.hospital.dao.mysql;
 
-import com.hospital.hospital.dao.DoctorDAO;
+import com.hospital.hospital.dao.interfaces.DoctorDAO;
 import com.hospital.hospital.vao.Doctor;
 import jakarta.enterprise.inject.Model;
 import jakarta.persistence.*;
@@ -18,6 +18,7 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
     @PersistenceContext(unitName = "hospitals")
     EntityManager em;
     EntityManagerFactory emf;
+
     public DoctorDAOMySQLImpl() {
         emf = Persistence.createEntityManagerFactory("hospitals");
         em = emf.createEntityManager();
