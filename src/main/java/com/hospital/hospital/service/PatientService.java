@@ -1,6 +1,8 @@
 package com.hospital.hospital.service;
 
 import com.hospital.hospital.dao.PatientDAOInMemImpl;
+import com.hospital.hospital.dto.PatientListNotification;
+import com.hospital.hospital.enums.PatientListAction;
 import com.hospital.hospital.interfaces.IPatientServiceLocal;
 import com.hospital.hospital.interfaces.IPatientServiceRemote;
 import com.hospital.hospital.repository.DoctorRepository;
@@ -64,11 +66,13 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
 
 
         if (found != null && foundPatient != null && found.getMaxPatients() > found.getPatients().size()) {
+            PatientListNotification notification = new PatientListNotification(found, foundPatient, PatientListAction.SELECT);
             foundPatient.setDoctor(found);
             this.patientRepository.update(foundPatient);
 
             found.getPatients().add(foundPatient);
             doctorRepository.update(found);
+            foundPatient.patientSubject.setState(notification);
             emailSenderService.notifyDoctor(foundPatient);
             return true;
         } else {

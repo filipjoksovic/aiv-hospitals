@@ -1,5 +1,7 @@
 package com.hospital.hospital.service;
 
+import com.hospital.hospital.dto.PatientListNotification;
+import com.hospital.hospital.enums.PatientListAction;
 import com.hospital.hospital.interfaces.IDoctorServiceLocal;
 import com.hospital.hospital.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.repository.DoctorRepository;
@@ -21,14 +23,13 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
     private static final long serialVersionUID = 2332164455692294904L;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
-    private final EmailSenderService emailSenderService;
 
     private final Logger logger = LoggerFactory.getLogger(DoctorService.class);
+
 
     public DoctorService() {
         this.doctorRepository = new DoctorRepository();
         this.patientRepository = new PatientRepository();
-        this.emailSenderService = new EmailSenderService();
     }
 
     @Override
@@ -78,12 +79,13 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
         Patient foundPatient = this.patientRepository.find(patientId);
 
         if (found != null && foundPatient != null) {
+            PatientListNotification notification = new PatientListNotification(found, foundPatient, PatientListAction.SELECT);
             found.getPatients().add(foundPatient);
             doctorRepository.update(found);
             logger.info("Added patient with id {} to doctor with id {}", patientId, doctorId);
             try {
                 logger.info("Attempting to notify doctor {} about patient selection", doctorId);
-                emailSenderService.notifyDoctor(foundPatient);
+                foundPatient.patientSubject.setState(notification);
                 logger.info("Doctor {} notified", doctorId);
 
             } catch (Exception e) {
