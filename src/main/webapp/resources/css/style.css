@@ -11,6 +11,14 @@ html {
     font-family: 'Open Sans', sans-serif;
 }
 
+.d-flex {
+    display: flex;
+}
+
+.w-100 {
+    width: 100%;
+}
+
 .header {
     display: flex;
     width: 100%;
@@ -62,6 +70,10 @@ html {
 
 .btn-primary.btn-primary {
     background-color: #00c4ff;
+}
+
+.btn.btn-success {
+    background-color: #6ebd75;
 }
 
 .patients {
@@ -288,3 +300,39 @@ table td {
     text-align: center;
 }
 
+.visits {
+    margin-top: 1rem;
+}
+
+.visit {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    border: 1px solid #e7e7e7;
+    padding: 1rem;
+    position: relative;
+}
+
+.visit .visit-actions {
+    position: absolute;
+    right: 1rem;
+    bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+}
+
+.visit-actions .visit-action {
+    background-color: #e7e7e7;
+    padding: .5rem;
+    border: 1px solid white;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    text-decoration: none;
+    color: black;
+    flex-wrap: wrap;
+    border-radius: 100rem;
+}

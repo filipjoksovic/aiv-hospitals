@@ -26,6 +26,8 @@ public class Doctor implements Serializable {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Patient> patients;
 
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Visit> visits;
 
     public Doctor() {
         super();
@@ -140,5 +142,13 @@ public class Doctor implements Serializable {
 
     public String getFullName() {
         return this.fname + " " + this.lname;
+    }
+
+    public List<Visit> getVisits() {
+        return visits;
+    }
+
+    public void setVisits(List<Visit> visits) {
+        this.visits = visits;
     }
 }

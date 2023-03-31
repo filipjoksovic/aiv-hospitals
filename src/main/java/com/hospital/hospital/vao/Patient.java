@@ -5,6 +5,7 @@ import com.hospital.hospital.patterns.observer.PatientListActionSubject;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "patients")
@@ -27,6 +28,8 @@ public class Patient implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Visit> visit;
     @Transient
     transient private DoctorChangeObserver patientObserver;
 
@@ -180,5 +183,13 @@ public class Patient implements Serializable {
 
     public void setPatientObserver(DoctorChangeObserver patientObserver) {
         this.patientObserver = patientObserver;
+    }
+
+    public List<Visit> getVisit() {
+        return visit;
+    }
+
+    public void setVisit(List<Visit> visit) {
+        this.visit = visit;
     }
 }

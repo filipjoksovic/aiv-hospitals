@@ -55,4 +55,13 @@ public class EmailSenderService implements Serializable {
         Transport.send(message);
 
     }
+
+    public void sendMedicationReport(String content, String email) throws Exception {
+        this.send("filipjoksovic1@gmail.com", "filip.joksovic@student.um.si", "Medication report", "During your visit, your doctor has prescribed you following medication: " + content);
+    }
+
+    public void sendNotesReport(String content, String email) throws Exception {
+        this.send("filipjoksovic1@gmail.com", "filip.joksovic@student.um.si", "Notes report", "During your visit, your doctor has left following notes: " + content);
+
+    }
 }
