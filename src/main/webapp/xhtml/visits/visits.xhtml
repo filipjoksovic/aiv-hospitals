@@ -71,12 +71,6 @@
                     <p>Medications: <h:outputText value="#{visit.medications}"/></p>
 
                     <div class="visit-actions">
-                        <h:form prependId="false">
-                            <h:commandLink styleClass="visit-action danger"
-                                           action="#{visitBean.delete(visit.id)}">
-                                <i class="fas fa-trash"/>
-                            </h:commandLink>
-                        </h:form>
                         <h:form>
                             <h:commandLink styleClass="visit-action warning"
                                            action="#{visitBean.goToVisitDetails(visit.id)}">
