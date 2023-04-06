@@ -10,19 +10,18 @@ import com.hospital.hospital.service.interfaces.IPatientServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.Stateless;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @Stateless
 public class PatientService implements Serializable, IPatientServiceLocal, IPatientServiceRemote {
     String NO_DOCTOR_LABEL = "No doctor";
 
-    Logger log = LoggerFactory.getLogger(PatientService.class);
+    Logger log = Logger.getLogger(PatientService.class.toString());
     private static final long serialVersionUID = 3278536426967908723L;
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
@@ -71,7 +70,6 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
 
 
         if (foundPatient.getDoctor() == null || foundPatient.getDoctor().getId() != doctorId) {
-            log.info("Attempting to set doctor {} for patient {}", foundDoctor.getId(), foundPatient.getId());
             if (foundDoctor != null && foundPatient != null && foundDoctor.getMaxPatients() > foundDoctor.getPatients().size()) {
                 PatientListNotification notification = new PatientListNotification(foundDoctor, foundPatient, PatientListAction.SELECT);
                 foundPatient.setDoctor(foundDoctor);
@@ -84,7 +82,6 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
                 return false;
             }
         } else {
-            log.info("No need for changing doctor for patient {}", foundPatient.getId());
             return false;
         }
     }

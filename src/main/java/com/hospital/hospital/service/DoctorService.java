@@ -9,14 +9,12 @@ import com.hospital.hospital.service.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.Stateless;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
-import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
 @Stateless
 public class DoctorService implements Serializable, IDoctorServiceRemote, IDoctorServiceLocal {
@@ -24,7 +22,7 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
     private final DoctorRepository doctorRepository;
     private final PatientRepository patientRepository;
 
-    private final Logger logger = LoggerFactory.getLogger(DoctorService.class);
+    private final Logger logger = Logger.getLogger(DoctorService.class.toString());
 
 
     public DoctorService() {
@@ -70,10 +68,8 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
 
     @Override
     public boolean addPatient(int doctorId, int patientId) {
-        logger.info("Adding patient with id {} to doctor with id {}", patientId, doctorId);
 
         if (doctorId <= 0 || patientId <= 0) {
-            logger.error("Invalid ids provided. DoctorId: {}, PatientId: {}", doctorId, patientId);
             return false;
         }
 
@@ -82,16 +78,14 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
 
         if (found != null && foundPatient != null) {
             PatientListNotification notification = new PatientListNotification(found, foundPatient, PatientListAction.SELECT);
-            found.getPatients().add(foundPatient);
-            doctorRepository.update(found);
-            logger.info("Added patient with id {} to doctor with id {}", patientId, doctorId);
+//            found.getPatients().add(foundPatient);
+//            doctorRepository.update(found);
             try {
-                logger.info("Attempting to notify doctor {} about patient selection", doctorId);
                 foundPatient.patientSubject.setState(notification);
-                logger.info("Doctor {} notified", doctorId);
+                foundPatient.setDoctor(found);
+                patientRepository.update(foundPatient);
 
             } catch (Exception e) {
-                logger.error("Error while sending the email {}", e.getMessage());
             }
             return true;
         }
@@ -108,8 +102,6 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
         Patient foundPatient = this.patientRepository.find(patientId);
 
         if (found != null && foundPatient != null) {
-            found.setPatients(found.getPatients().stream().filter(patient -> patient.getId() != patientId).collect(Collectors.toList()));
-            doctorRepository.update(found);
             foundPatient.setDoctor(null);
             patientRepository.update(foundPatient);
             return true;

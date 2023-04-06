@@ -2,20 +2,19 @@ package com.hospital.hospital.dao.inmem;
 
 import com.hospital.hospital.dao.interfaces.DoctorDAO;
 import com.hospital.hospital.vao.Doctor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 public class DoctorDAOInMemImpl implements DoctorDAO {
 
 
     private static DoctorDAOInMemImpl instance;
     private final List<Doctor> dataSource = new Vector<>();
-    Logger logger = LoggerFactory.getLogger(DoctorDAOInMemImpl.class);
+    Logger logger = Logger.getLogger(DoctorDAOInMemImpl.class.toString());
 
 
     public static synchronized DoctorDAOInMemImpl getInstance() {
@@ -42,7 +41,6 @@ public class DoctorDAOInMemImpl implements DoctorDAO {
     @Override
     public Doctor save(Doctor entity) {
         entity.setId(this.generateId());
-        logger.info("Saving entity with id: {} ", entity.getId());
         this.dataSource.add(entity);
         return entity;
     }

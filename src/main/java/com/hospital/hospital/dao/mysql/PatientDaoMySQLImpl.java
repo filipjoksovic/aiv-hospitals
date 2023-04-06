@@ -3,15 +3,14 @@ package com.hospital.hospital.dao.mysql;
 import com.hospital.hospital.dao.interfaces.PatientDAO;
 import com.hospital.hospital.vao.Patient;
 import jakarta.persistence.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 
 public class PatientDaoMySQLImpl implements PatientDAO {
 
-    Logger logger = LoggerFactory.getLogger(PatientDaoMySQLImpl.class);
+    Logger logger = Logger.getLogger(PatientDaoMySQLImpl.class.toString());
     private static PatientDaoMySQLImpl instance;
     @PersistenceContext(unitName = "hospitals")
     EntityManager em;
@@ -50,10 +49,8 @@ public class PatientDaoMySQLImpl implements PatientDAO {
 
     @Override
     public Patient update(Patient entity) {
-        logger.info("Attempting to update patient with id {}", entity.getId());
         Patient found = em.find(Patient.class, entity.getId());
         if (found == null) {
-            logger.error("Patient with id {} not found in db", entity.getId());
             return null;
         }
         try {
@@ -63,12 +60,11 @@ public class PatientDaoMySQLImpl implements PatientDAO {
             found.setFname(entity.getFname());
             found.setNote(entity.getNote());
             found.setEmail(entity.getEmail());
+            found.setDoctor(entity.getDoctor());
             em.getTransaction().begin();
-            em.merge(entity);
+            em.merge(found);
             em.getTransaction().commit();
-            logger.info("Successfully updated patient with id {}", entity.getId());
         } catch (Exception e) {
-            logger.error("Error while updating patient with id {}. Rolling back", entity.getId());
             return null;
         }
         return entity;
@@ -78,18 +74,14 @@ public class PatientDaoMySQLImpl implements PatientDAO {
     public int delete(int entityId) {
         Patient found = em.find(Patient.class, entityId);
         if (found == null) {
-            logger.error("Patient with id {} not found in db", entityId);
             return -1;
         }
-        logger.info("Found patient with id {}", entityId);
         try {
             em.getTransaction().begin();
             em.remove(found);
             em.getTransaction().commit();
-            logger.info("Successfully deleted patient with id {}", entityId);
             return entityId;
         } catch (Exception e) {
-            logger.info("Error while deleting patient with id {}. Rolling back", entityId);
             return -1;
         }
     }

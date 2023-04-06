@@ -8,17 +8,16 @@ import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("patientsBean")
 @SessionScoped
 public class PatientsJsfBean implements Serializable {
 
-    Logger log = LoggerFactory.getLogger(PatientsJsfBean.class);
+    Logger log = Logger.getLogger(PatientsJsfBean.class.toString());
     private static final long serialVersionUID = -3294547943335355918L;
 
     @EJB

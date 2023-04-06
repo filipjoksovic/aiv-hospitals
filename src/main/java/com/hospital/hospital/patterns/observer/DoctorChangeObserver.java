@@ -3,12 +3,12 @@ package com.hospital.hospital.patterns.observer;
 import com.hospital.hospital.dto.PatientListNotification;
 import com.hospital.hospital.enums.PatientListAction;
 import com.hospital.hospital.service.EmailSenderService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class DoctorChangeObserver extends Observer<PatientListNotification> {
 
-    private final Logger logger = LoggerFactory.getLogger(DoctorChangeObserver.class);
+    private final Logger logger = Logger.getLogger(DoctorChangeObserver.class.toString());
 
     public DoctorChangeObserver(Subject<PatientListNotification> subject) {
         super(subject);
@@ -16,7 +16,6 @@ public class DoctorChangeObserver extends Observer<PatientListNotification> {
 
     @Override
     public void update() {
-        logger.info("Doctor for patient changed");
         PatientListNotification state = this.subject.getState();
         if (state.getAction() == PatientListAction.SELECT) {
             try {

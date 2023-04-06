@@ -6,16 +6,15 @@ import com.hospital.hospital.service.interfaces.IVisitServiceLocal;
 import com.hospital.hospital.service.interfaces.IVisitServiceRemote;
 import com.hospital.hospital.vao.Visit;
 import jakarta.ejb.Stateless;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Stateless
 public class VisitService implements IVisitServiceLocal, IVisitServiceRemote {
 
     private final VisitRepository visitRepository;
-    Logger logger = LoggerFactory.getLogger(VisitService.class);
+    Logger logger = Logger.getLogger(VisitService.class.toString());
     NotificationStrategyContext notificationStrategyContext;
 
 
@@ -30,7 +29,6 @@ public class VisitService implements IVisitServiceLocal, IVisitServiceRemote {
             notificationStrategyContext = new NotificationStrategyContext(visit);
             return visitRepository.save(visit);
         } catch (Exception e) {
-            logger.error("Error when saving visit with id {}", visit.getId());
         }
         return null;
     }
@@ -42,7 +40,6 @@ public class VisitService implements IVisitServiceLocal, IVisitServiceRemote {
             notificationStrategyContext = new NotificationStrategyContext(visit);
             return updated;
         } catch (Exception e) {
-            logger.error("Error when updating visit with id {}", visit.getId());
         }
         return null;
     }

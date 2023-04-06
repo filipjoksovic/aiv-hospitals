@@ -7,16 +7,15 @@ import com.hospital.hospital.vao.Patient;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("doctorBean")
 @SessionScoped
 public class DoctorsJsfBean implements Serializable {
-    private final Logger log = LoggerFactory.getLogger(DoctorsJsfBean.class);
+    private final Logger log = Logger.getLogger(DoctorsJsfBean.class.toString());
 
     private static final long serialVersionUID = 4659985386224665451L;
     @EJB
@@ -35,10 +34,8 @@ public class DoctorsJsfBean implements Serializable {
 
     public String update() {
         if (selectedDoctor == null) {
-            log.error("Trying to update doctor while doctor is not set");
             return "doctors.xhtml?faces-redirect=true";
         }
-        log.info("Updating doctor with id {}", selectedDoctor.getId());
         iDoctorServiceLocal.update(selectedDoctor);
 
         return "doctors.xhtml?faces-redirect=true";

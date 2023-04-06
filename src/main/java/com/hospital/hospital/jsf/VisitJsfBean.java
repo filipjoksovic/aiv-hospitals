@@ -10,11 +10,10 @@ import com.hospital.hospital.vao.Visit;
 import jakarta.ejb.EJB;
 import jakarta.enterprise.context.SessionScoped;
 import jakarta.inject.Named;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Named("visitBean")
 @SessionScoped
@@ -22,7 +21,7 @@ public class VisitJsfBean implements Serializable {
 
 
     private static final long serialVersionUID = 4896830600207254789L;
-    Logger log = LoggerFactory.getLogger(VisitJsfBean.class);
+    Logger log = Logger.getLogger(VisitJsfBean.class.toString());
 
     @EJB
     IVisitServiceLocal iVisitServiceLocal;
@@ -60,9 +59,11 @@ public class VisitJsfBean implements Serializable {
         return "visits?faces-redirect=true";
     }
 
-    public Visit finalizeVisit() {
+    public String finalizeVisit() {
         this.selectedVisit.setStatus(VisitStatus.FINALIZED);
-        return iVisitServiceLocal.update(selectedVisit);
+        iVisitServiceLocal.update(selectedVisit);
+        return "visits?faces-redirect=true";
+
     }
 
     public String delete(int visitId) {

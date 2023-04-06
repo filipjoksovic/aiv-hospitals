@@ -5,16 +5,15 @@ import com.hospital.hospital.vao.Doctor;
 import jakarta.enterprise.inject.Model;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @Model
 public class DoctorDAOMySQLImpl implements DoctorDAO {
 
     private static DoctorDAOMySQLImpl instance;
-    Logger logger = LoggerFactory.getLogger(DoctorDAOMySQLImpl.class);
+    Logger logger = Logger.getLogger(DoctorDAOMySQLImpl.class.toString());
     @PersistenceContext(unitName = "hospitals")
     EntityManager em;
     EntityManagerFactory emf;
@@ -34,7 +33,7 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
     @Override
 //    @TransactionAttribute(TransactionAttributeType.REQUIRED)
     public List<Doctor> getAll() {
-//        em.clear();
+        em.clear();
         TypedQuery<Doctor> query = em.createQuery("SELECT d FROM Doctor d", Doctor.class);
         List<Doctor> doctors = query.getResultList();
         return doctors;
@@ -55,7 +54,6 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
-                logger.error("Error when saving doctor with id {}", entity.getId());
             }
         }
         return entity;
@@ -70,6 +68,7 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
         foundDoctor.setMaxPatients(entity.getMaxPatients());
         foundDoctor.setDob(entity.getDob());
         foundDoctor.setPhone(entity.getPhone());
+        foundDoctor.setPatients(entity.getPatients());
         em.getTransaction().begin();
         em.merge(foundDoctor);
         em.getTransaction().commit();
@@ -80,27 +79,21 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
     @Transactional
     public int delete(int entityId) {
         Doctor found = em.find(Doctor.class, entityId);
-        logger.info("Finding doctor with id {}", entityId);
         if (found != null) {
-            logger.info("Doctor with id {} found", entityId);
             em.getTransaction().begin();
             em.remove(found);
             em.getTransaction().commit();
             return found.getId();
         }
-        logger.error("Doctor not found. Provided id {}", entityId);
         return -1;
     }
 
     @Override
     public int getNumberOfPatients(int doctorId) {
-        logger.info("Finding doctor with id {}", doctorId);
         Doctor found = em.find(Doctor.class, doctorId);
         if (found == null) {
-            logger.error("Doctor with id {} not found", doctorId);
             return 0;
         } else {
-            logger.info("Doctor with id {} found", doctorId);
             return 1;
         }
 

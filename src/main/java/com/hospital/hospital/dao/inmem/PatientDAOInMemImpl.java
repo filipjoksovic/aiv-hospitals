@@ -2,16 +2,15 @@ package com.hospital.hospital.dao.inmem;
 
 import com.hospital.hospital.dao.interfaces.PatientDAO;
 import com.hospital.hospital.vao.Patient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class PatientDAOInMemImpl implements PatientDAO {
     private static PatientDAOInMemImpl instance = new PatientDAOInMemImpl();
     private final List<Patient> dataSource = new Vector<>();
-    Logger logger = LoggerFactory.getLogger(PatientDAOInMemImpl.class);
+    Logger logger = Logger.getLogger(PatientDAOInMemImpl.class.toString());
 
     public static synchronized PatientDAOInMemImpl getInstance() {
         if (instance == null) {
@@ -40,7 +39,6 @@ public class PatientDAOInMemImpl implements PatientDAO {
     @Override
     public Patient save(Patient entity) {
 //        entity.setId(generateId());
-        logger.info("Saving entity with id {}", entity.getId());
         dataSource.add(entity);
         return entity;
     }
