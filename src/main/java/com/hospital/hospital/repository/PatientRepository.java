@@ -5,9 +5,11 @@ import com.hospital.hospital.dao.mysql.PatientDaoMySQLImpl;
 import com.hospital.hospital.vao.Patient;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 public class PatientRepository {
 
+    Logger logger = Logger.getLogger(PatientRepository.class.toString());
     public List<Patient> getAll() {
         return PatientDaoMySQLImpl.getInstance().getAll();
     }
@@ -25,6 +27,7 @@ public class PatientRepository {
     }
 
     public int delete(int patient_id) {
-        return PatientDaoMySQLImpl.getInstance().delete(PatientDAOInMemImpl.getInstance().find(patient_id).getId());
+        logger.info("Deleting patient with id: " + patient_id);
+        return PatientDaoMySQLImpl.getInstance().delete(patient_id);
     }
 }

@@ -39,7 +39,7 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
 
     @Override
     public List<Doctor> getAllAvailable() {
-        List<Doctor> allDoctors = doctorRepository.getAllAvailable();
+        List<Doctor> allDoctors = doctorRepository.getAll();
 
         return allDoctors;
     }
@@ -85,8 +85,6 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
 
         if (found != null && foundPatient != null) {
             PatientListNotification notification = new PatientListNotification(found, foundPatient, PatientListAction.SELECT);
-//            found.getPatients().add(foundPatient);
-//            doctorRepository.update(found);
             try {
                 foundPatient.patientSubject.setState(notification);
                 foundPatient.setDoctor(found);

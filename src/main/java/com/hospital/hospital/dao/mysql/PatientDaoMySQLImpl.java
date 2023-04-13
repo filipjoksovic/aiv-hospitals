@@ -3,6 +3,7 @@ package com.hospital.hospital.dao.mysql;
 import com.hospital.hospital.dao.interfaces.PatientDAO;
 import com.hospital.hospital.vao.Patient;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -71,17 +72,23 @@ public class PatientDaoMySQLImpl implements PatientDAO {
     }
 
     @Override
+    @Transactional
     public int delete(int entityId) {
+        logger.info("Attempting to delete patient with id: " + entityId);
         Patient found = em.find(Patient.class, entityId);
         if (found == null) {
+            logger.info("Patient with id: " + entityId + " not found");
             return -1;
         }
         try {
             em.getTransaction().begin();
             em.remove(found);
             em.getTransaction().commit();
+            logger.info("Should be deleted now");
             return entityId;
         } catch (Exception e) {
+            logger.severe("Failed to delete patient with id: " + entityId);
+            e.printStackTrace();
             return -1;
         }
     }

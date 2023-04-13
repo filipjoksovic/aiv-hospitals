@@ -3,6 +3,7 @@ package com.hospital.hospital.rest;
 import com.hospital.hospital.dto.AddPatientReqDto;
 import com.hospital.hospital.dto.DoctorJSONDto;
 import com.hospital.hospital.dto.DoctorsPatientJSONDto;
+import com.hospital.hospital.service.interfaces.IDoctorServiceLocal;
 import com.hospital.hospital.service.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.service.interfaces.IPatientServiceRemote;
 import com.hospital.hospital.vao.Doctor;
@@ -22,6 +23,8 @@ public class DoctorResource {
     @EJB
     IDoctorServiceRemote doctorService;
     @EJB
+    IDoctorServiceLocal doctorServiceLocal;
+    @EJB
     IPatientServiceRemote patientService;
 
     @GET
@@ -38,6 +41,12 @@ public class DoctorResource {
     @Path("/{id}")
     public DoctorJSONDto find(@PathParam("id") int id) {
         return DoctorJSONDto.to(doctorService.find(id));
+    }
+
+    @POST
+    public DoctorJSONDto save(DoctorJSONDto doctorJSONDto) {
+        Doctor doctor = doctorJSONDto.from(doctorJSONDto);
+        return DoctorJSONDto.to(doctorServiceLocal.save(doctor));
     }
 
     @POST

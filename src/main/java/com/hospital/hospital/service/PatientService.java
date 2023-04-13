@@ -56,6 +56,7 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
 
     @Override
     public int delete(int patientId) {
+        log.info("Deleting patient with id: " + patientId);
         return patientRepository.delete(patientId);
     }
 

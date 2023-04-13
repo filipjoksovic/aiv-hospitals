@@ -3,6 +3,7 @@ package com.hospital.hospital.rest;
 import com.hospital.hospital.dto.AddPatientReqDto;
 import com.hospital.hospital.dto.PatientJSONDto;
 import com.hospital.hospital.service.interfaces.IDoctorServiceRemote;
+import com.hospital.hospital.service.interfaces.IPatientServiceLocal;
 import com.hospital.hospital.service.interfaces.IPatientServiceRemote;
 import com.hospital.hospital.vao.Doctor;
 import com.hospital.hospital.vao.Patient;
@@ -19,6 +20,8 @@ import java.util.List;
 public class PatientResource {
     @EJB
     IDoctorServiceRemote doctorService;
+    @EJB
+    IPatientServiceLocal patientServiceLocal;
     @EJB
     IPatientServiceRemote patientService;
 
@@ -39,6 +42,12 @@ public class PatientResource {
     }
 
     @POST
+    public PatientJSONDto save(PatientJSONDto patientJSONDto) {
+        Patient patient = patientJSONDto.from(patientJSONDto);
+        return PatientJSONDto.to(patientServiceLocal.save(patient));
+    }
+
+    @POST
     @Path("/addDoctor")
     public PatientJSONDto addDoctor(AddPatientReqDto reqDto) throws Exception {
         Patient patient = patientService.find(reqDto.getPatientId());
@@ -50,41 +59,4 @@ public class PatientResource {
             return PatientJSONDto.to(patient);
         }
     }
-
-//    @POST
-//    @Path("/addPatient")
-//    public DoctorJSONDto addPatient(AddPatientReqDto reqDto) {
-//        Patient patient = patientService.find(reqDto.getPatientId());
-//        Doctor doctor = doctorService.find(reqDto.getDoctorId());
-//        if (patient == null || doctor == null) {
-//            return null;
-//        } else {
-//            doctorService.addPatient(doctor.getId(), patient.getId());
-//            return DoctorJSONDto.to(doctor);
-//        }
-//    }
-//
-//    @POST
-//    @Path("/removePatient")
-//    public DoctorJSONDto removePatient(AddPatientReqDto reqDto) {
-//        Patient patient = patientService.find(reqDto.getPatientId());
-//        Doctor doctor = doctorService.find(reqDto.getDoctorId());
-//        if (patient == null || doctor == null) {
-//            return null;
-//        } else {
-//            doctorService.removePatient(doctor.getId(), patient.getId());
-//            return DoctorJSONDto.to(doctor);
-//        }
-//    }
-//
-//    @GET
-//    @Path("{id}/patients")
-//    public List<DoctorsPatientJSONDto> getPatients(@PathParam("id") int doctorId) {
-//        Doctor doctor = doctorService.find(doctorId);
-//        if (doctor == null) {
-//            return null;
-//        } else {
-//            return DoctorJSONDto.to(doctor).getPatients();
-//        }
-//    }
 }

@@ -6,8 +6,6 @@
     <persistence-unit name="hospitals">
         <jta-data-source>java:jboss/datasources/HospitalsDS</jta-data-source>
 
-        <!--        <exclude-unlisted-classes>false</exclude-unlisted-classes>-->
-
         <class>com.hospital.hospital.vao.Patient</class>
         <class>com.hospital.hospital.vao.Doctor</class>
         <class>com.hospital.hospital.vao.Visit</class>

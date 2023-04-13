@@ -12,8 +12,8 @@ import java.util.logging.Logger;
 @Model
 public class DoctorDAOMySQLImpl implements DoctorDAO {
 
-    private static DoctorDAOMySQLImpl instance;
     Logger logger = Logger.getLogger(DoctorDAOMySQLImpl.class.toString());
+    private static DoctorDAOMySQLImpl instance;
     @PersistenceContext(unitName = "hospitals")
     EntityManager em;
     EntityManagerFactory emf;

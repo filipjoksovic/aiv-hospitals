@@ -32,8 +32,14 @@ public class DoctorJSONDto {
         this.patients = patients.stream().map(DoctorsPatientJSONDto::to).toList();
     }
 
+    public DoctorJSONDto() {
+    }
+
     public static DoctorJSONDto to(Doctor doctor) {
         return new DoctorJSONDto(doctor.getId(), doctor.getFname(), doctor.getLname(), doctor.getEmail(), doctor.getPhone(), doctor.getDob(), doctor.getMaxPatients(), doctor.getPatients());
+    }
+    public static Doctor from (DoctorJSONDto doctor) {
+        return new Doctor(doctor.getFname(), doctor.getLname(), doctor.getEmail(), doctor.getPhone(), doctor.getDob(), doctor.getMaxPatients());
     }
 
     public int getId() {
@@ -73,5 +79,37 @@ public class DoctorJSONDto {
 
     public List<DoctorsPatientJSONDto> getPatients() {
         return patients;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setFname(String fname) {
+        this.fname = fname;
+    }
+
+    public void setLname(String lname) {
+        this.lname = lname;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public void setMaxPatients(int maxPatients) {
+        this.maxPatients = maxPatients;
+    }
+
+    public void setPatients(List<DoctorsPatientJSONDto> patients) {
+        this.patients = patients;
     }
 }

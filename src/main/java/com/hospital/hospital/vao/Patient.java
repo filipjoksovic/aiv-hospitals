@@ -16,7 +16,7 @@ public class Patient implements Serializable {
     @Transient
     transient public PatientListActionSubject patientSubject;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String fname;
     private String lname;
