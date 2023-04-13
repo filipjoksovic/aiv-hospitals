@@ -42,4 +42,9 @@ public class DoctorRepository {
     public List<Doctor> getAllAvailable() {
         return DoctorDAOMySQLImpl.getInstance().getAllAvailable();
     }
+
+    public boolean isDoctorFull(int id) {
+        Doctor doctor = DoctorDAOMySQLImpl.getInstance().find(id);
+        return doctor.getPatients().size() >= doctor.getMaxPatients();
+    }
 }

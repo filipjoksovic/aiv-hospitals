@@ -65,7 +65,8 @@ public class DoctorsJsfBean implements Serializable {
 
     public String removePatient(int patientId) {
         iDoctorServiceRemote.removePatient(selectedDoctor.getId(), patientId);
-        return "doctorDetails.xhtml?" + "faces-redirect=true";
+        iDoctorServiceRemote.getAll();
+        return "doctors.xhtml?" + "faces-redirect=true";
 
     }
 

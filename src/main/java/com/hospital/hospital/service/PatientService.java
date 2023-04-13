@@ -46,11 +46,23 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
 
     @Override
     public Patient save(Patient patient) {
+        if (doctorRepository.isDoctorFull(patient.getDoctor().getId())) {
+            log.info("Doctor is full. Proceeding to save patient without doctor");
+            patient.setDoctor(null);
+        }
         return patientRepository.save(patient);
     }
 
     @Override
     public Patient update(Patient patient) {
+        if (patient.getDoctor() == null) {
+            log.info("Doctor is null. Proceeding to update patient without doctor");
+            return patientRepository.update(patient);
+        }
+        if (doctorRepository.isDoctorFull(patient.getDoctor().getId())) {
+            log.info("Doctor is full. Proceeding to update patient without doctor");
+            patient.setDoctor(null);
+        }
         return patientRepository.update(patient);
     }
 
@@ -65,26 +77,21 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
         if (doctorId <= 0 || patientId <= 0) {
             return false;
         }
+        Patient patient = patientRepository.find(patientId);
+        Doctor doctor = doctorRepository.find(doctorId);
 
-        Doctor foundDoctor = this.doctorRepository.find(doctorId);
-        Patient foundPatient = this.patientRepository.find(patientId);
-
-
-        if (foundPatient.getDoctor() == null || foundPatient.getDoctor().getId() != doctorId) {
-            if (foundDoctor != null && foundPatient != null && foundDoctor.getMaxPatients() > foundDoctor.getPatients().size()) {
-                PatientListNotification notification = new PatientListNotification(foundDoctor, foundPatient, PatientListAction.SELECT);
-                foundPatient.setDoctor(foundDoctor);
-                this.patientRepository.update(foundPatient);
-                foundPatient.patientSubject.setState(notification);
-                emailSenderService.notifyDoctor(foundPatient);
-                return true;
-            } else {
-                emailSenderService.notifyPatient(foundPatient);
-                return false;
-            }
-        } else {
+        if (patient == null || doctor == null) {
             return false;
         }
+        if (doctorRepository.isDoctorFull(doctorId)) {
+            log.info("Doctor is full. Proceeding to update patient without doctor");
+            patient.setDoctor(null);
+            patientRepository.update(patient);
+            return false;
+        }
+        patient.setDoctor(doctor);
+        patientRepository.update(patient);
+        return true;
     }
 
     @Override

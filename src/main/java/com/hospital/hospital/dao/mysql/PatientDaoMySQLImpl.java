@@ -66,6 +66,8 @@ public class PatientDaoMySQLImpl implements PatientDAO {
             em.merge(found);
             em.getTransaction().commit();
         } catch (Exception e) {
+            logger.severe("Failed to update patient with id: " + entity.getId());
+            e.printStackTrace();
             return null;
         }
         return entity;
