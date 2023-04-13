@@ -98,4 +98,11 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
         }
 
     }
+
+    public List<Doctor> getAllAvailable() {
+        em.clear();
+        TypedQuery<Doctor> query = em.createQuery("SELECT d FROM Doctor d WHERE d.patients.size < d.maxPatients", Doctor.class);
+        List<Doctor> doctors = query.getResultList();
+        return doctors;
+    }
 }

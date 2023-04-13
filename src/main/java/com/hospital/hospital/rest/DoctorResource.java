@@ -26,9 +26,9 @@ public class DoctorResource {
 
     @GET
     @Path("/all")
-    public List<DoctorJSONDto> getAll() {
+    public List<DoctorJSONDto> getAll(@QueryParam("available") boolean available) {
         List<DoctorJSONDto> dtos = new ArrayList<>();
-        for (Doctor d : doctorService.getAll()) {
+        for (Doctor d : available ? doctorService.getAll() : doctorService.getAllAvailable()) {
             dtos.add(DoctorJSONDto.to(d));
         }
         return dtos;
@@ -43,7 +43,7 @@ public class DoctorResource {
     @POST
     @Path("/addPatient")
     public DoctorJSONDto addPatient(AddPatientReqDto reqDto) {
-4        Patient patient = patientService.find(reqDto.getPatientId());
+        Patient patient = patientService.find(reqDto.getPatientId());
         Doctor doctor = doctorService.find(reqDto.getDoctorId());
         if (patient == null || doctor == null) {
             return null;

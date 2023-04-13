@@ -39,4 +39,7 @@ public class DoctorRepository {
         return DoctorDAOMySQLImpl.getInstance().getNumberOfPatients(id);
     }
 
+    public List<Doctor> getAllAvailable() {
+        return DoctorDAOMySQLImpl.getInstance().getAllAvailable();
+    }
 }

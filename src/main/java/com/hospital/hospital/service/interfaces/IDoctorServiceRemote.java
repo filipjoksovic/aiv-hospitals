@@ -9,6 +9,8 @@ import java.util.List;
 public interface IDoctorServiceRemote {
     List<Doctor> getAll();
 
+    List<Doctor> getAllAvailable();
+
     Doctor find(int doctorId);
 
     boolean addPatient(int doctorId, int patientId);

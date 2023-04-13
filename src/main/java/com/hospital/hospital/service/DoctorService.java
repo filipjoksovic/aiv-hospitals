@@ -38,6 +38,13 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
     }
 
     @Override
+    public List<Doctor> getAllAvailable() {
+        List<Doctor> allDoctors = doctorRepository.getAllAvailable();
+
+        return allDoctors;
+    }
+
+    @Override
     public Doctor find(int doctorId) {
         return doctorRepository.find(doctorId);
     }
