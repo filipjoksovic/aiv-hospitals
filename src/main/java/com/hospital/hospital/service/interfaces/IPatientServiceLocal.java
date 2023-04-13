@@ -10,7 +10,7 @@ import java.util.List;
 public interface IPatientServiceLocal {
     Patient save(Patient patient);
 
-    Patient update(Patient patient);
+    Patient update(Patient patient) throws Exception;
 
     int delete(int patientId);
 

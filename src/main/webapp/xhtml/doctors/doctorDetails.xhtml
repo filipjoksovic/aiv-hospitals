@@ -50,11 +50,6 @@
 
             <h:commandButton rendered="#{doctorBean.selectedDoctor ne null}" styleClass="btn btn-primary"
                              action="#{doctorBean.update}"
-                             value="Save"></h:commandButton>
-
-
-            <h:commandButton rendered="#{doctorBean.selectedDoctor eq null}" styleClass="btn btn-primary"
-                             action="#{doctorBean.save}"
                              value="Update"></h:commandButton>
         </h:form>
 

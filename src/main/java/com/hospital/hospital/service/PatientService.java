@@ -3,6 +3,8 @@ package com.hospital.hospital.service;
 import com.hospital.hospital.dto.PatientListNotification;
 import com.hospital.hospital.dto.doctor.DoctorPatientNumberDTO;
 import com.hospital.hospital.enums.PatientListAction;
+import com.hospital.hospital.patterns.observer.DoctorChangeObserver;
+import com.hospital.hospital.patterns.observer.PatientListActionSubject;
 import com.hospital.hospital.repository.DoctorRepository;
 import com.hospital.hospital.repository.PatientRepository;
 import com.hospital.hospital.service.interfaces.IPatientServiceLocal;
@@ -54,7 +56,7 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
     }
 
     @Override
-    public Patient update(Patient patient) {
+    public Patient update(Patient patient) throws Exception {
         if (patient.getDoctor() == null) {
             log.info("Doctor is null. Proceeding to update patient without doctor");
             return patientRepository.update(patient);
@@ -91,6 +93,9 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
         }
         patient.setDoctor(doctor);
         patientRepository.update(patient);
+        if(patient.patientSubject != null) {
+            patient.patientSubject.setState(new PatientListNotification(doctor, patient, PatientListAction.SELECT));
+        }
         return true;
     }
 

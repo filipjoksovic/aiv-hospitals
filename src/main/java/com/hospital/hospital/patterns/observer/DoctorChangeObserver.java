@@ -12,6 +12,7 @@ public class DoctorChangeObserver extends Observer<PatientListNotification> {
 
     public DoctorChangeObserver(Subject<PatientListNotification> subject) {
         super(subject);
+        this.subject.attach(this);
     }
 
     @Override

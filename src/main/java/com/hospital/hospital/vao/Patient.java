@@ -37,7 +37,6 @@ public class Patient implements Serializable {
     public Patient() {
         this.patientSubject = new PatientListActionSubject();
         this.patientObserver = new DoctorChangeObserver(this.patientSubject);
-        this.patientSubject.attach(patientObserver);
     }
 
     public Patient(String note) {
@@ -47,6 +46,7 @@ public class Patient implements Serializable {
 
 
     public Patient(String fname, String lname, String email, String phone, String dob) {
+        this();
         this.fname = fname;
         this.lname = lname;
         this.email = email;
@@ -55,6 +55,7 @@ public class Patient implements Serializable {
     }
 
     public Patient(int id, String fname, String lname, String email, String phone, String dob) {
+        this();
         this.id = id;
         this.fname = fname;
         this.lname = lname;
@@ -66,43 +67,29 @@ public class Patient implements Serializable {
     public Patient(String fname, String lname, String email, String phone, String dob, String note) {
         this(fname, lname, email, phone, dob);
         this.note = note;
-        this.patientSubject = new PatientListActionSubject();
-        this.patientObserver = new DoctorChangeObserver(this.patientSubject);
-        this.patientSubject.attach(patientObserver);
     }
 
     public Patient(int id, String fname, String lname, String email, String phone, String dob, String note) {
         this(id, fname, lname, email, phone, dob);
         this.note = note;
-        this.patientSubject = new PatientListActionSubject();
-        this.patientObserver = new DoctorChangeObserver(this.patientSubject);
-        this.patientSubject.attach(patientObserver);
     }
 
     public Patient(String fname, String lname, String email, String phone, String dob, String note, Doctor doctor) {
         this(fname, lname, email, phone, dob);
         this.note = note;
         this.doctor = doctor;
-        this.patientSubject = new PatientListActionSubject();
-        this.patientObserver = new DoctorChangeObserver(this.patientSubject);
-        this.patientSubject.attach(patientObserver);
     }
 
     public Patient(int id, String fname, String lname, String email, String phone, String dob, String note, Doctor doctor) {
         this(id, fname, lname, email, phone, dob);
         this.note = note;
         this.doctor = doctor;
-        this.patientSubject = new PatientListActionSubject();
-        this.patientObserver = new DoctorChangeObserver(this.patientSubject);
-        this.patientSubject.attach(patientObserver);
     }
 
     public Patient(String note, Doctor doctor) {
+        this();
         this.note = note;
         this.doctor = doctor;
-        this.patientSubject = new PatientListActionSubject();
-        this.patientObserver = new DoctorChangeObserver(this.patientSubject);
-        this.patientSubject.attach(patientObserver);
     }
 
     public String getNote() {

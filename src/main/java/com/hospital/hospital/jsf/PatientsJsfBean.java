@@ -1,5 +1,7 @@
 package com.hospital.hospital.jsf;
 
+import com.hospital.hospital.patterns.observer.DoctorChangeObserver;
+import com.hospital.hospital.patterns.observer.PatientListActionSubject;
 import com.hospital.hospital.service.interfaces.IDoctorServiceRemote;
 import com.hospital.hospital.service.interfaces.IPatientServiceLocal;
 import com.hospital.hospital.service.interfaces.IPatientServiceRemote;
@@ -53,6 +55,7 @@ public class PatientsJsfBean implements Serializable {
 
         iPatientServiceLocal.update(selectedPatient);
 
+
         if (doctor_id > 0) {
             log.info("Doctor selected for patient");
             iPatientServiceRemote.addDoctorToPatient(selectedPatient.getId(), doctor_id);
@@ -96,6 +99,9 @@ public class PatientsJsfBean implements Serializable {
         log.info("Setting selected patient");
 
         this.selectedPatient = iPatientServiceRemote.find(patient_id);
+        this.selectedPatient.patientSubject = new PatientListActionSubject();
+        this.selectedPatient.setPatientObserver(new DoctorChangeObserver(this.selectedPatient.patientSubject));
+        this.selectedPatient.patientSubject.attach(this.selectedPatient.getPatientObserver());
         return "patientDetails?faces-redirect=true";
 
     }

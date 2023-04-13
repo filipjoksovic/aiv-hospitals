@@ -109,6 +109,7 @@ public class DoctorService implements Serializable, IDoctorServiceRemote, IDocto
         if (found != null && foundPatient != null) {
             foundPatient.setDoctor(null);
             patientRepository.update(foundPatient);
+            foundPatient.patientSubject.setState(new PatientListNotification(found, foundPatient, PatientListAction.REMOVE));
             return true;
         }
         return false;
