@@ -13,13 +13,14 @@ public class VisitDAOMySQLImpl implements VisitDAO {
 
     private static VisitDAOMySQLImpl instance;
     Logger logger = Logger.getLogger(VisitDAOMySQLImpl.class.toString());
-    @PersistenceContext(unitName = "hospitals")
+    @PersistenceContext(unitName = "hospitals", type = PersistenceContextType.TRANSACTION)
     EntityManager em;
     EntityManagerFactory emf;
 
     public VisitDAOMySQLImpl() {
         emf = Persistence.createEntityManagerFactory("hospitals");
         em = emf.createEntityManager();
+        em.setProperty("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH);
     }
 
     public static synchronized VisitDAOMySQLImpl getInstance() {
@@ -45,6 +46,7 @@ public class VisitDAOMySQLImpl implements VisitDAO {
         try {
             em.getTransaction().begin();
             em.persist(entity);
+            em.flush();
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
@@ -68,11 +70,14 @@ public class VisitDAOMySQLImpl implements VisitDAO {
         try {
             em.getTransaction().begin();
             em.merge(entity);
+            em.flush();
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
+        }
+        finally {
         }
         return entity;
     }
@@ -86,6 +91,7 @@ public class VisitDAOMySQLImpl implements VisitDAO {
         try {
             em.getTransaction().begin();
             em.remove(found);
+            em.flush();
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {

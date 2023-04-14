@@ -44,6 +44,7 @@ public class PatientResource {
     @POST
     public PatientJSONDto save(PatientJSONDto patientJSONDto) {
         Patient patient = patientJSONDto.from(patientJSONDto);
+
         return PatientJSONDto.to(patientServiceLocal.save(patient));
     }
 

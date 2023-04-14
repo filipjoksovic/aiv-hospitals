@@ -14,6 +14,7 @@ public class DoctorJSONDto {
     private String phone;
     private String dob;
     private int maxPatients;
+    private int patientsCount;
     List<DoctorsPatientJSONDto> patients;
 
     public DoctorJSONDto(int id, String fname, String lname, String email, String phone, String dob, int maxPatients) {
@@ -38,6 +39,21 @@ public class DoctorJSONDto {
     public static DoctorJSONDto to(Doctor doctor) {
         return new DoctorJSONDto(doctor.getId(), doctor.getFname(), doctor.getLname(), doctor.getEmail(), doctor.getPhone(), doctor.getDob(), doctor.getMaxPatients(), doctor.getPatients());
     }
+
+    public static DoctorJSONDto toDetails(Doctor doctor){
+        DoctorJSONDto details =  new DoctorJSONDto(doctor.getId(), doctor.getFname(), doctor.getLname(), doctor.getEmail(), doctor.getPhone(), doctor.getDob(), doctor.getMaxPatients());
+        details.setPatientsCount(doctor.getPatients().size());
+        return details;
+    }
+
+    public void setPatientsCount(int size) {
+        this.patientsCount = size;
+    }
+    public int getPatientsCount() {
+        return patientsCount;
+    }
+
+
     public static Doctor from (DoctorJSONDto doctor) {
         return new Doctor(doctor.getFname(), doctor.getLname(), doctor.getEmail(), doctor.getPhone(), doctor.getDob(), doctor.getMaxPatients());
     }

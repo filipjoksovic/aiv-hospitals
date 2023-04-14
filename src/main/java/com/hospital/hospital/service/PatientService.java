@@ -48,6 +48,10 @@ public class PatientService implements Serializable, IPatientServiceLocal, IPati
 
     @Override
     public Patient save(Patient patient) {
+        if(patient.getDoctor() == null) {
+            log.info("Doctor is null. Proceeding to save patient without doctor");
+            return patientRepository.save(patient);
+        }
         if (doctorRepository.isDoctorFull(patient.getDoctor().getId())) {
             log.info("Doctor is full. Proceeding to save patient without doctor");
             patient.setDoctor(null);

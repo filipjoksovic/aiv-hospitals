@@ -13,13 +13,14 @@ public class PatientDaoMySQLImpl implements PatientDAO {
 
     Logger logger = Logger.getLogger(PatientDaoMySQLImpl.class.toString());
     private static PatientDaoMySQLImpl instance;
-    @PersistenceContext(unitName = "hospitals")
+    @PersistenceContext(unitName = "hospitals", type = PersistenceContextType.TRANSACTION)
     EntityManager em;
     EntityManagerFactory emf;
 
     public PatientDaoMySQLImpl() {
         emf = Persistence.createEntityManagerFactory("hospitals");
         em = emf.createEntityManager();
+        em.setProperty("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH);
     }
 
     public static synchronized PatientDaoMySQLImpl getInstance() {
@@ -44,6 +45,7 @@ public class PatientDaoMySQLImpl implements PatientDAO {
     public Patient save(Patient entity) {
         em.getTransaction().begin();
         em.persist(entity);
+        em.flush();
         em.getTransaction().commit();
         return entity;
     }
@@ -64,6 +66,7 @@ public class PatientDaoMySQLImpl implements PatientDAO {
             found.setDoctor(entity.getDoctor());
             em.getTransaction().begin();
             em.merge(found);
+            em.flush();
             em.getTransaction().commit();
         } catch (Exception e) {
             logger.severe("Failed to update patient with id: " + entity.getId());
@@ -85,6 +88,7 @@ public class PatientDaoMySQLImpl implements PatientDAO {
         try {
             em.getTransaction().begin();
             em.remove(found);
+            em.flush();
             em.getTransaction().commit();
             logger.info("Should be deleted now");
             return entityId;

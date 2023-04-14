@@ -14,13 +14,14 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
 
     Logger logger = Logger.getLogger(DoctorDAOMySQLImpl.class.toString());
     private static DoctorDAOMySQLImpl instance;
-    @PersistenceContext(unitName = "hospitals")
+    @PersistenceContext(unitName = "hospitals", type = PersistenceContextType.TRANSACTION)
     EntityManager em;
     EntityManagerFactory emf;
 
     public DoctorDAOMySQLImpl() {
         emf = Persistence.createEntityManagerFactory("hospitals");
         em = emf.createEntityManager();
+        em.setProperty("javax.persistence.cache.storeMode", CacheStoreMode.REFRESH);
     }
 
     public static synchronized DoctorDAOMySQLImpl getInstance() {
@@ -50,6 +51,7 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
         try {
             em.getTransaction().begin();
             em.persist(entity);
+            em.flush();
             em.getTransaction().commit();
         } catch (Exception e) {
             if (em.getTransaction().isActive()) {
@@ -71,6 +73,7 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
         foundDoctor.setPatients(entity.getPatients());
         em.getTransaction().begin();
         em.merge(foundDoctor);
+        em.flush();
         em.getTransaction().commit();
         return entity;
     }
@@ -82,6 +85,7 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
         if (found != null) {
             em.getTransaction().begin();
             em.remove(found);
+            em.flush();
             em.getTransaction().commit();
             return found.getId();
         }
