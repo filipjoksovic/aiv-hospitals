@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 @Model
@@ -42,7 +43,12 @@ public class DoctorDAOMySQLImpl implements DoctorDAO {
 
     @Override
     public Doctor find(int id) {
-        return em.find(Doctor.class, id);
+        Doctor found = em.find(Doctor.class, id);
+        if (found == null) {
+            throw new NoSuchElementException("Doctor with id " + id + " not found");
+        }
+        em.refresh(found);
+        return found;
     }
 
     @Override

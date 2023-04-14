@@ -6,6 +6,7 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 @Stateless
@@ -38,6 +39,11 @@ public class VisitDAOMySQLImpl implements VisitDAO {
 
     @Override
     public Visit find(int id) {
+        Visit found = em.find(Visit.class, id);
+        if (found == null) {
+            throw new NoSuchElementException("Visit with id " + id + " not found");
+        }
+        em.refresh(found);
         return em.find(Visit.class, id);
     }
 
@@ -76,8 +82,7 @@ public class VisitDAOMySQLImpl implements VisitDAO {
             if (em.getTransaction().isActive()) {
                 em.getTransaction().rollback();
             }
-        }
-        finally {
+        } finally {
         }
         return entity;
     }

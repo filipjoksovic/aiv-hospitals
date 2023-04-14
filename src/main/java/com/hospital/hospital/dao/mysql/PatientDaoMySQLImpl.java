@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.logging.Logger;
 
 
@@ -38,6 +39,11 @@ public class PatientDaoMySQLImpl implements PatientDAO {
 
     @Override
     public Patient find(int id) {
+        Patient found = em.find(Patient.class, id);
+        if (found == null) {
+            throw new NoSuchElementException("Patient with id " + id + " not found");
+        }
+        em.refresh(found);
         return em.find(Patient.class, id);
     }
 

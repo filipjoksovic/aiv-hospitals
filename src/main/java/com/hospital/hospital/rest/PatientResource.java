@@ -57,6 +57,7 @@ public class PatientResource {
             return null;
         } else {
             patientService.addDoctorToPatient(patient.getId(), doctor.getId());
+            Doctor found = doctorService.find(doctor.getId());
             return PatientJSONDto.to(patient);
         }
     }
